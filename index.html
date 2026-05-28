@@ -920,6 +920,24 @@
       color: var(--danger);
       border-color: rgba(255,123,138,0.18);
     }
+    .admin-only { display: none; }
+    body.admin-mode .admin-only { display: inline-flex; }
+    .admin-delete {
+      color: #ffd4d9;
+      background: rgba(255,123,138,0.12);
+      border: 1px solid rgba(255,123,138,0.22);
+    }
+    .admin-delete:hover {
+      box-shadow: 0 10px 24px rgba(255,123,138,0.12);
+    }
+    .forum-admin {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
     .article-card p {
       color: var(--muted);
       line-height: 1.7;
@@ -1241,6 +1259,17 @@
         linear-gradient(135deg, #dff4fb, #eefaff 72%);
     }
     .modal-body { color: var(--muted); line-height: 1.82; display: grid; gap: 16px; }
+    .admin-panel {
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .admin-panel .notice { display: block; }
+    .admin-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
     footer {
       padding: 34px 0 42px;
@@ -1307,6 +1336,7 @@
       .nav-links.open { display: flex; }
       .nav-links a { text-align: center; padding: 12px 14px; }
       .nav-actions .btn-outline:not(.icon-btn) { display: none; }
+      .nav-actions .admin-btn { display: inline-flex; }
       .sync-status { min-height: 42px; }
     }
 
@@ -1401,6 +1431,7 @@
           <span class="sync-dot" aria-hidden="true"></span>
           <b>Modo local</b>
         </div>
+        <button class="btn btn-outline admin-btn" id="adminBtn" type="button" hidden>Dono</button>
         <button class="btn btn-outline icon-btn" id="themeBtn" aria-label="Alternar tema">☀️</button>
         <button class="btn btn-outline" id="printBtn">Imprimir</button>
         <a class="btn btn-primary" href="#publicar">Publicar</a>
@@ -1855,6 +1886,23 @@
     </div>
   </div>
 
+  <div class="modal" id="adminModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="closeAdminModal" aria-label="Fechar painel do dono">✕</button>
+      <div class="label">Controle do dono</div>
+      <h2 style="margin-top:14px;">Painel privado do SmartLog</h2>
+      <p class="hint" id="adminStatusText" style="margin-top:10px;">Entre com sua senha para liberar ações de moderação.</p>
+      <form class="admin-panel" id="adminLoginForm">
+        <input class="input" id="adminPassword" type="password" placeholder="Senha de dono" autocomplete="current-password" required />
+        <div class="admin-actions">
+          <button class="btn btn-primary" type="submit">Entrar como dono</button>
+          <button class="btn btn-outline" id="adminLogoutBtn" type="button" hidden>Sair do painel</button>
+        </div>
+      </form>
+      <p class="notice" id="adminNotice" style="display:none;"></p>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -1981,6 +2029,11 @@
       connected: false,
       source: null,
       users: 0
+    };
+
+    const adminState = {
+      enabled: false,
+      authenticated: false
     };
 
     const glossaryItems = [
@@ -2141,6 +2194,109 @@
       }
     }
 
+    async function requestJSON(path, payload = null) {
+      const options = payload
+        ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
+        : { method: 'GET' };
+      const response = await fetch(path, options);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || 'Falha na operação.');
+      return data;
+    }
+
+    function updateAdminUI() {
+      document.body.classList.toggle('admin-mode', adminState.authenticated);
+      $('#adminBtn').hidden = !adminState.enabled;
+      $('#adminLogoutBtn').hidden = !adminState.authenticated;
+      $('#adminPassword').hidden = adminState.authenticated;
+      $('#adminLoginForm button[type="submit"]').hidden = adminState.authenticated;
+      $('#adminStatusText').textContent = adminState.authenticated
+        ? 'Você está no modo dono. Os botões de apagar aparecem nos artigos publicados pela comunidade.'
+        : 'Entre com sua senha para liberar ações de moderação.';
+      renderArticles();
+    }
+
+    async function checkAdminStatus() {
+      if (location.protocol === 'file:') return;
+      try {
+        const status = await requestJSON('/api/admin/status');
+        adminState.enabled = Boolean(status.enabled);
+        adminState.authenticated = Boolean(status.authenticated);
+        updateAdminUI();
+      } catch {
+        adminState.enabled = false;
+        adminState.authenticated = false;
+        updateAdminUI();
+      }
+    }
+
+    function openAdminModal() {
+      $('#adminModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (!adminState.authenticated) $('#adminPassword').focus();
+    }
+
+    function closeAdminModal() {
+      $('#adminModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    async function handleAdminLogin(event) {
+      event.preventDefault();
+      try {
+        await requestJSON('/api/admin/login', { password: $('#adminPassword').value });
+        $('#adminPassword').value = '';
+        adminState.authenticated = true;
+        $('#adminNotice').style.display = 'none';
+        updateAdminUI();
+        showToast('Modo dono ativado.');
+      } catch (error) {
+        $('#adminNotice').textContent = error.message || 'Senha incorreta.';
+        $('#adminNotice').style.display = 'block';
+      }
+    }
+
+    async function handleAdminLogout() {
+      try {
+        await requestJSON('/api/admin/logout', {});
+      } catch {}
+      adminState.authenticated = false;
+      updateAdminUI();
+      showToast('Você saiu do painel do dono.');
+    }
+
+    async function deletePost(id) {
+      if (!adminState.authenticated) {
+        openAdminModal();
+        return;
+      }
+      const post = getAllPosts().find(item => item.id === id);
+      if (!post || !confirm(`Apagar o artigo "${post.title}"?`)) return;
+      try {
+        const payload = await requestJSON('/api/admin/delete-post', { id });
+        applyRemoteState(payload);
+        showToast('Artigo apagado do portal.');
+      } catch (error) {
+        showToast(error.message || 'Não foi possível apagar.');
+      }
+    }
+
+    async function deleteForumPost(id) {
+      if (!adminState.authenticated) {
+        openAdminModal();
+        return;
+      }
+      const post = getForumPosts().find(item => String(item.id) === String(id));
+      if (!post || !confirm(`Apagar a mensagem de "${post.name}"?`)) return;
+      try {
+        const payload = await requestJSON('/api/admin/delete-forum', { id });
+        applyRemoteState(payload);
+        showToast('Mensagem apagada do mural.');
+      } catch (error) {
+        showToast(error.message || 'Não foi possível apagar.');
+      }
+    }
+
     async function initRealtimeSync() {
       if (location.protocol === 'file:') {
         updateSyncStatus('local');
@@ -2242,12 +2398,14 @@
           <div class="article-actions">
             <span class="hint">Por ${escapeHTML(post.author)} • ${formatDate(post.date)}</span>
             <button class="btn btn-soft" data-read="${post.id}">Ler artigo</button>
+            ${post.id.startsWith('aluno-') ? `<button class="btn btn-soft admin-delete admin-only" data-delete="${post.id}">Apagar</button>` : ''}
           </div>
         </article>
       `).join('');
 
       $$('[data-read]').forEach(btn => btn.addEventListener('click', () => openArticle(btn.dataset.read)));
       $$('[data-fav]').forEach(btn => btn.addEventListener('click', () => toggleFavorite(btn.dataset.fav)));
+      $$('[data-delete]').forEach(btn => btn.addEventListener('click', () => deletePost(btn.dataset.delete)));
     }
 
     function openArticle(id) {
@@ -2378,9 +2536,13 @@
         <div class="forum-post">
           <b>${escapeHTML(post.name)}</b>
           <p>${escapeHTML(post.message)}</p>
-          ${post.date ? `<span class="hint">${escapeHTML(post.date)}</span>` : ''}
+          <div class="forum-admin">
+            ${post.date ? `<span class="hint">${escapeHTML(post.date)}</span>` : '<span></span>'}
+            ${post.id ? `<button class="btn btn-soft admin-delete admin-only" data-delete-forum="${escapeHTML(post.id)}">Apagar</button>` : ''}
+          </div>
         </div>
       `).join('');
+      $$('[data-delete-forum]').forEach(btn => btn.addEventListener('click', () => deleteForumPost(btn.dataset.deleteForum)));
     }
 
     async function handleForumSubmit(event) {
@@ -2538,7 +2700,13 @@
       setupBars();
       setupHeroTilt();
       initRealtimeSync();
+      checkAdminStatus();
 
+      $('#adminBtn').addEventListener('click', openAdminModal);
+      $('#adminLoginForm').addEventListener('submit', handleAdminLogin);
+      $('#adminLogoutBtn').addEventListener('click', handleAdminLogout);
+      $('#closeAdminModal').addEventListener('click', closeAdminModal);
+      $('#adminModal').addEventListener('click', event => { if (event.target.id === 'adminModal') closeAdminModal(); });
       $('#themeBtn').addEventListener('click', toggleTheme);
       $('#printBtn').addEventListener('click', () => window.print());
       $('#searchInput').addEventListener('input', renderArticles);
@@ -2549,7 +2717,12 @@
       $('#newsletterForm').addEventListener('submit', handleNewsletter);
       $('#closeModal').addEventListener('click', closeArticle);
       $('#articleModal').addEventListener('click', event => { if (event.target.id === 'articleModal') closeArticle(); });
-      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeArticle(); });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') {
+          closeArticle();
+          closeAdminModal();
+        }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', boot);
