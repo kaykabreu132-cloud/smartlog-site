@@ -16,13 +16,15 @@ Se abrir `index.html` direto, o site ainda funciona, mas em modo local.
 
 ## Supabase
 
-Para dados permanentes, crie as tabelas no Supabase usando `supabase_schema.sql` e configure estas variaveis no Render:
+Para dados permanentes, crie/atualize as tabelas no Supabase usando `supabase_schema.sql` e configure estas variaveis no Render:
 
 - `SUPABASE_URL`: URL do projeto Supabase.
 - `SUPABASE_SECRET_KEY`: chave secreta nova do Supabase, usada somente no servidor.
 - `SUPABASE_SERVICE_ROLE_KEY`: alternativa caso seu painel mostre a chave legacy `service_role`.
 
 Nao coloque nenhuma dessas chaves dentro do `index.html`, no GitHub, em print, nem no navegador. Ela deve ficar apenas nas Environment Variables do Render.
+
+Se publicar ou apagar conteudo der erro, rode o `supabase_schema.sql` de novo no SQL Editor do Supabase. Ele tambem cria as permissoes RLS usadas pelo site.
 
 ## Painel do dono
 

@@ -98,6 +98,7 @@ def supabase_headers(extra: dict[str, str] | None = None) -> dict[str, str]:
     headers = {
         "apikey": SUPABASE_KEY,
         "Authorization": f"Bearer {SUPABASE_KEY}",
+        "Accept": "application/json",
         "Content-Type": "application/json",
     }
     if extra:

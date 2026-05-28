@@ -5,49 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartLog | Portal Inteligente de Logística</title>
   <meta name="description" content="SmartLog é um portal estudantil de logística com conteúdo acessível, tendências, tecnologia, comunidade e aprendizado colaborativo." />
-  <meta name="theme-color" content="#07141b" />
+  <meta name="theme-color" content="#0b1110" />
   <meta property="og:title" content="SmartLog | Portal Inteligente de Logística" />
   <meta property="og:description" content="Portal colaborativo de logística com artigos, quiz, comunidade, newsletter e modelo de negócio Canvas." />
   <meta property="og:type" content="website" />
   <style>
     :root {
-      --bg: #07141b;
-      --bg-soft: #0d1d27;
-      --surface: rgba(12, 28, 39, 0.76);
-      --surface-strong: #0f2431;
-      --surface-solid: #112838;
-      --card: linear-gradient(180deg, rgba(17, 40, 56, 0.92), rgba(10, 25, 35, 0.92));
-      --text: #eaf8fd;
-      --muted: #9dc2cf;
-      --line: rgba(164, 219, 236, 0.14);
-      --primary: #53cbe3;
-      --primary-2: #1d99bc;
-      --primary-3: #8be9ff;
-      --accent: #78f5d1;
-      --warning: #ffc96f;
+      --bg: #0b1110;
+      --bg-soft: #111a18;
+      --surface: rgba(17, 26, 24, 0.84);
+      --surface-strong: #16221f;
+      --surface-solid: #182522;
+      --card: linear-gradient(180deg, rgba(22, 34, 31, 0.96), rgba(12, 18, 17, 0.96));
+      --text: #f2fbf7;
+      --muted: #a8bbb4;
+      --line: rgba(214, 231, 223, 0.14);
+      --primary: #58d88c;
+      --primary-2: #2fae74;
+      --primary-3: #9af4bd;
+      --accent: #66d9ef;
+      --warning: #f4c66a;
       --danger: #ff7b8a;
-      --success: #31d39a;
+      --success: #58d88c;
       --shadow: 0 20px 60px rgba(0,0,0,0.35);
-      --glow: 0 0 0 1px rgba(139,233,255,0.08), 0 14px 40px rgba(25,146,189,0.22);
-      --radius-xl: 32px;
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --radius-sm: 14px;
+      --glow: 0 0 0 1px rgba(154,244,189,0.08), 0 14px 40px rgba(47,174,116,0.18);
+      --radius-xl: 12px;
+      --radius-lg: 10px;
+      --radius-md: 8px;
+      --radius-sm: 8px;
       --container: min(1220px, calc(100% - 32px));
     }
 
     body.light {
-      --bg: #f1fbff;
-      --bg-soft: #dff4fb;
+      --bg: #f6f8f5;
+      --bg-soft: #e9f1ea;
       --surface: rgba(255,255,255,0.82);
       --surface-strong: #ffffff;
       --surface-solid: #ffffff;
-      --card: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(243,251,255,0.96));
-      --text: #132733;
-      --muted: #587381;
-      --line: rgba(19, 39, 51, 0.10);
-      --shadow: 0 24px 60px rgba(24, 67, 94, 0.12);
-      --glow: 0 0 0 1px rgba(29,153,188,0.08), 0 14px 34px rgba(25,146,189,0.14);
+      --card: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(246,248,245,0.98));
+      --text: #18231f;
+      --muted: #60716a;
+      --line: rgba(24, 35, 31, 0.12);
+      --shadow: 0 24px 60px rgba(38, 72, 55, 0.13);
+      --glow: 0 0 0 1px rgba(47,174,116,0.08), 0 14px 34px rgba(47,174,116,0.14);
     }
 
     * { box-sizing: border-box; }
@@ -57,10 +57,11 @@
       margin: 0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(circle at 12% 10%, rgba(83, 203, 227, 0.17), transparent 23rem),
-        radial-gradient(circle at 82% 18%, rgba(120, 245, 209, 0.10), transparent 24rem),
-        radial-gradient(circle at 50% 100%, rgba(83, 203, 227, 0.08), transparent 28rem),
+        linear-gradient(90deg, rgba(154,244,189,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(102,217,239,0.035) 1px, transparent 1px),
+        linear-gradient(135deg, rgba(88,216,140,0.12), transparent 28rem),
         linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 84%, #000 16%) 100%);
+      background-size: 38px 38px, 38px 38px, auto, auto;
       color: var(--text);
       min-height: 100vh;
       overflow-x: hidden;
@@ -80,19 +81,7 @@
       z-index: -2;
     }
 
-    .ambient, .ambient::before, .ambient::after {
-      content: "";
-      position: fixed;
-      width: 30rem;
-      height: 30rem;
-      border-radius: 50%;
-      filter: blur(24px);
-      opacity: 0.18;
-      pointer-events: none;
-      z-index: -1;
-      animation: drift 16s ease-in-out infinite;
-      background: radial-gradient(circle, rgba(83,203,227,0.9), transparent 70%);
-    }
+    .ambient, .ambient::before, .ambient::after { display: none; }
     .ambient { top: -8rem; left: -8rem; }
     .ambient::before { top: 38vh; right: -6rem; background: radial-gradient(circle, rgba(120,245,209,0.9), transparent 70%); animation-duration: 19s; }
     .ambient::after { bottom: -10rem; left: 38vw; background: radial-gradient(circle, rgba(83,203,227,0.75), transparent 72%); animation-duration: 22s; }
@@ -159,7 +148,7 @@
       margin-bottom: 16px;
     }
     body.light .label { color: var(--primary-2); }
-    h1, h2, h3, h4 { margin: 0; line-height: 1.04; letter-spacing: -0.035em; }
+    h1, h2, h3, h4 { margin: 0; line-height: 1.04; letter-spacing: 0; }
     h1 { font-size: clamp(2.75rem, 5.25vw, 5.15rem); max-width: 640px; }
     h2 { font-size: clamp(1.9rem, 3.55vw, 3.25rem); }
     h3 { font-size: 1.18rem; line-height: 1.14; }
@@ -213,7 +202,7 @@
     }
     .brand-text strong {
       font-size: 1.14rem;
-      letter-spacing: -0.04em;
+      letter-spacing: 0;
     }
     .brand-text span {
       color: var(--muted);
@@ -271,7 +260,7 @@
       align-items: center;
       gap: 9px;
       padding: 0 13px;
-      border-radius: 16px;
+      border-radius: 8px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.035);
       color: var(--muted);
@@ -351,7 +340,7 @@
 
     .hero {
       padding: 58px 0 38px;
-      overflow: clip;
+      overflow: visible;
     }
     .hero-grid {
       display: grid;
@@ -593,7 +582,7 @@
       display: block;
       font-size: 1.45rem;
       margin-bottom: 8px;
-      letter-spacing: -0.04em;
+      letter-spacing: 0;
     }
     .stat-box span { color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
     .bar-list { display: grid; gap: 12px; }
@@ -663,7 +652,7 @@
     }
     .info-card:hover {
       transform: translateY(-5px);
-      border-color: rgba(139,233,255,0.24);
+      border-color: rgba(154,244,189,0.28);
       box-shadow: 0 18px 38px rgba(0,0,0,0.25);
     }
     .info-card::after {
@@ -673,19 +662,19 @@
       top: -10px;
       width: 120px;
       height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(83,203,227,0.16), transparent 70%);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(88,216,140,0.14), transparent 70%);
       pointer-events: none;
     }
     .card-icon {
       width: 52px;
       height: 52px;
-      border-radius: 16px;
+      border-radius: 8px;
       display: grid;
       place-items: center;
-      background: rgba(83,203,227,0.12);
+      background: rgba(88,216,140,0.12);
       margin-bottom: 16px;
-      border: 1px solid rgba(139,233,255,0.14);
+      border: 1px solid rgba(154,244,189,0.14);
       color: var(--primary-3);
       font-weight: 900;
       font-size: 1.15rem;
@@ -710,7 +699,7 @@
     .metric-card strong {
       display: block;
       font-size: clamp(1.6rem, 4vw, 2.6rem);
-      letter-spacing: -0.05em;
+      letter-spacing: 0;
       margin-bottom: 8px;
       color: var(--primary-3);
     }
@@ -735,7 +724,7 @@
     .filter-stack { display: grid; gap: 12px; }
     .input, .select, .textarea {
       width: 100%;
-      border-radius: 16px;
+      border-radius: 8px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.03);
       color: var(--text);
@@ -745,8 +734,8 @@
     }
     body.light .input, body.light .select, body.light .textarea { background: rgba(255,255,255,0.8); }
     .input:focus, .select:focus, .textarea:focus {
-      border-color: rgba(139,233,255,0.34);
-      box-shadow: 0 0 0 4px rgba(83,203,227,0.12);
+      border-color: rgba(154,244,189,0.34);
+      box-shadow: 0 0 0 4px rgba(88,216,140,0.12);
     }
     .textarea { resize: vertical; min-height: 132px; }
     .hint { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
@@ -763,7 +752,7 @@
       padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid var(--line);
-      background: rgba(83,203,227,0.08);
+      background: rgba(88,216,140,0.08);
       color: var(--primary-3);
       font-size: 0.82rem;
       font-weight: 700;
@@ -783,7 +772,7 @@
     }
     .article-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(139,233,255,0.22);
+      border-color: rgba(154,244,189,0.22);
     }
     .article-card::before {
       content: "";
@@ -798,14 +787,14 @@
     .article-thumb {
       position: relative;
       height: 170px;
-      border-radius: 18px;
+      border-radius: 8px;
       overflow: hidden;
       margin-bottom: 16px;
-      border: 1px solid rgba(139,233,255,0.12);
+      border: 1px solid rgba(154,244,189,0.12);
       background:
-        linear-gradient(160deg, rgba(120,245,209,0.10), transparent 45%),
-        linear-gradient(180deg, rgba(83,203,227,0.12), rgba(0,0,0,0.08)),
-        linear-gradient(135deg, #173344, #0a1c27 72%);
+        linear-gradient(160deg, rgba(88,216,140,0.12), transparent 45%),
+        linear-gradient(180deg, rgba(102,217,239,0.10), rgba(0,0,0,0.08)),
+        linear-gradient(135deg, #21332b, #0d1714 72%);
     }
     .article-thumb img {
       width: 100%;
@@ -824,9 +813,9 @@
     }
     body.light .article-thumb {
       background:
-        linear-gradient(160deg, rgba(120,245,209,0.10), transparent 45%),
-        linear-gradient(180deg, rgba(83,203,227,0.08), rgba(255,255,255,0.32)),
-        linear-gradient(135deg, #dff4fb, #eefaff 72%);
+        linear-gradient(160deg, rgba(88,216,140,0.10), transparent 45%),
+        linear-gradient(180deg, rgba(102,217,239,0.08), rgba(255,255,255,0.32)),
+        linear-gradient(135deg, #e4f2e6, #f7fbf6 72%);
     }
     .article-thumb::after {
       content: "";
@@ -834,8 +823,8 @@
       inset: auto -20px -42px auto;
       width: 170px;
       height: 170px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(83,203,227,0.28), transparent 70%);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(88,216,140,0.20), transparent 70%);
       filter: blur(4px);
       z-index: 2;
     }
@@ -861,8 +850,8 @@
       bottom: 18px;
       width: 120px;
       height: 50px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(83,203,227,0.26));
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(88,216,140,0.25));
       border: 1px solid rgba(255,255,255,0.14);
       z-index: 3;
     }
@@ -873,8 +862,8 @@
       top: -18px;
       width: 58px;
       height: 38px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(120,245,209,0.18));
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(102,217,239,0.18));
       border: 1px solid rgba(255,255,255,0.12);
     }
     .thumb-wheel, .thumb-wheel2 {
@@ -900,8 +889,8 @@
     .article-category {
       padding: 7px 11px;
       border-radius: 999px;
-      background: rgba(83,203,227,0.10);
-      border: 1px solid rgba(83,203,227,0.14);
+      background: rgba(88,216,140,0.10);
+      border: 1px solid rgba(88,216,140,0.14);
       color: var(--primary-3);
       font-size: 0.8rem;
       font-weight: 800;
@@ -910,7 +899,7 @@
     .favorite {
       width: 40px;
       height: 40px;
-      border-radius: 14px;
+      border-radius: 8px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.03);
       color: var(--text);
@@ -956,7 +945,7 @@
       grid-column: 1 / -1;
       padding: 26px;
       text-align: center;
-      border-radius: 20px;
+      border-radius: 8px;
       background: rgba(255,255,255,0.04);
       border: 1px dashed var(--line);
       color: var(--muted);
@@ -975,7 +964,7 @@
     .accordion { display: grid; gap: 12px; }
     .acc-item {
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 8px;
       overflow: hidden;
       background: rgba(255,255,255,0.03);
     }
@@ -1014,7 +1003,7 @@
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.03);
       color: var(--text);
-      border-radius: 16px;
+      border-radius: 8px;
       padding: 14px 16px;
       text-align: left;
       transition: transform .2s ease, border-color .2s ease, background .2s ease;
@@ -1060,7 +1049,7 @@
     .canvas-card h4 {
       margin-bottom: 12px;
       font-size: 1rem;
-      letter-spacing: -0.03em;
+      letter-spacing: 0;
     }
     .canvas-card ul {
       margin: 0;
@@ -1080,7 +1069,7 @@
     }
     .team-card {
       padding: 18px;
-      border-radius: 20px;
+      border-radius: 8px;
       border: 1px solid var(--line);
       background: rgba(255,255,255,0.03);
       text-align: center;
@@ -1089,13 +1078,13 @@
       width: 54px;
       height: 54px;
       margin: 0 auto 12px;
-      border-radius: 50%;
+      border-radius: 8px;
       display: grid;
       place-items: center;
       font-weight: 900;
-      background: linear-gradient(135deg, rgba(83,203,227,0.24), rgba(120,245,209,0.16));
+      background: linear-gradient(135deg, rgba(88,216,140,0.22), rgba(102,217,239,0.14));
       color: var(--primary-3);
-      border: 1px solid rgba(139,233,255,0.16);
+      border: 1px solid rgba(154,244,189,0.16);
     }
     body.light .team-avatar { color: var(--primary-2); }
     .team-card span {
@@ -1121,18 +1110,18 @@
       top: -80px;
       width: 280px;
       height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(83,203,227,0.22), transparent 72%);
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(88,216,140,0.18), transparent 72%);
       pointer-events: none;
     }
     .cta-visual {
       min-height: 240px;
-      border-radius: 24px;
+      border-radius: 8px;
       background:
-        linear-gradient(160deg, rgba(83,203,227,0.18), transparent 45%),
+        linear-gradient(160deg, rgba(88,216,140,0.18), transparent 45%),
         linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
-        linear-gradient(135deg, #123041, #0b1d29);
-      border: 1px solid rgba(139,233,255,0.12);
+        linear-gradient(135deg, #21332b, #0d1714);
+      border: 1px solid rgba(154,244,189,0.12);
       display: grid;
       place-items: center;
       position: relative;
@@ -1140,15 +1129,15 @@
     }
     body.light .cta-visual {
       background:
-        linear-gradient(160deg, rgba(83,203,227,0.12), transparent 45%),
+        linear-gradient(160deg, rgba(88,216,140,0.12), transparent 45%),
         linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5)),
-        linear-gradient(135deg, #ddf3fb, #f3fbff);
+        linear-gradient(135deg, #e4f2e6, #f7fbf6);
     }
     .cta-ring {
       width: 180px;
       height: 180px;
-      border-radius: 50%;
-      border: 18px solid rgba(83,203,227,0.22);
+      border-radius: 8px;
+      border: 18px solid rgba(88,216,140,0.22);
       position: relative;
       animation: spinSlow 13s linear infinite;
     }
@@ -1157,8 +1146,8 @@
       content: "";
       position: absolute;
       inset: 20px;
-      border-radius: 50%;
-      border: 12px dashed rgba(120,245,209,0.24);
+      border-radius: 8px;
+      border: 12px dashed rgba(102,217,239,0.24);
     }
     .cta-ring::after {
       inset: 48px;
@@ -1288,8 +1277,8 @@
     .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
     .reveal {
-      opacity: 0;
-      transform: translateY(26px);
+      opacity: 1;
+      transform: none;
       transition: opacity .7s ease, transform .7s ease;
     }
     .reveal.visible {
@@ -1342,11 +1331,21 @@
     }
 
     @media (max-width: 780px) {
+      :root { --container: min(calc(100% - 24px), 366px); }
+      body { background-size: 30px 30px, 30px 30px, auto, auto; }
+      .container { margin-left: 12px; margin-right: 12px; }
       .nav { min-height: 74px; }
       .sync-status { display: none; }
-      .hero { padding-top: 52px; }
-      h1 { font-size: clamp(2.2rem, 10vw, 3rem); max-width: 100%; }
-      h2 { font-size: clamp(1.75rem, 8vw, 2.55rem); }
+      header { position: sticky; }
+      .container, .nav, .hero-copy, .hero-panel, .dash, .dash-window, .panel { min-width: 0; max-width: 100%; }
+      .brand { gap: 8px; }
+      .logo-badge { width: 42px; height: 42px; border-radius: 8px; }
+      .logo-badge svg { width: 28px; height: 28px; }
+      .brand-text strong { font-size: 1rem; }
+      .hero { padding: 34px 0 22px; }
+      h1 { font-size: clamp(1.7rem, 7.5vw, 2.2rem); max-width: calc(100vw - 24px); line-height: 1.1; overflow-wrap: anywhere; }
+      h2 { font-size: clamp(1.55rem, 7vw, 2.25rem); line-height: 1.1; }
+      h3 { line-height: 1.2; }
       .hero-grid,
       .dash-content,
       .cards-4,
@@ -1357,15 +1356,18 @@
       .article-grid,
       .canvas-grid { grid-template-columns: 1fr; }
       .canvas-wide { grid-column: span 1; }
-      .section { padding: 76px 0; }
+      .section { padding: 52px 0; }
+      .section-header { margin-bottom: 22px; }
       .dash-content { min-height: auto; }
-      .dash { padding: 14px; }
+      .dash { padding: 8px; border-radius: 10px; }
+      .dash-window { border-radius: 8px; }
       .dash-top { align-items: center; flex-direction: row; }
       .dash-chip { max-width: 72%; }
       .hero-feature .sub,
       .dash .stat-row { display: none; }
-      .hero-feature .feature-image { min-height: 168px; }
+      .hero-feature .feature-image { min-height: 154px; border-radius: 8px; }
       .hero-copy .sub { line-height: 1.55; }
+      .gradient-text { overflow-wrap: anywhere; }
       .brand-text span { display: none; }
       .hero-actions, .hero-mini, .footer-actions { width: 100%; }
       .hero-mini { display: none; }
@@ -1376,9 +1378,43 @@
       .footer-actions .btn { width: 100%; }
       .nav-actions .btn { width: auto; }
       .nav-actions .icon-btn { width: 42px; height: 42px; }
+      .nav-actions #themeBtn { display: none; }
+      .nav-actions > a.btn-primary { display: none; }
+      .admin-btn { padding: 12px 14px; }
       .publish-card form .two-col { grid-template-columns: 1fr !important; }
-      .article-actions { align-items: stretch; }
+      .input, .select, .textarea { min-height: 48px; border-radius: 8px; }
+      .textarea { min-height: 118px; }
+      .article-grid { gap: 14px; }
+      .article-card,
+      .tool-card,
+      .publish-card,
+      .community-card,
+      .canvas-card,
+      .cta-card,
+      .info-card,
+      .metric-card { padding: 16px; }
+      .article-thumb { height: 145px; margin-bottom: 14px; }
+      .article-actions { align-items: stretch; display: grid; grid-template-columns: 1fr; }
       .article-actions .hint { width: 100%; }
+      .article-actions .btn { width: 100%; }
+      .sticky-tools { gap: 14px; }
+      .filter-stack { gap: 10px; }
+      .forum-list { max-height: 360px; }
+      .modal { padding: 0; align-items: stretch; }
+      .modal-card {
+        width: 100%;
+        max-height: none;
+        min-height: 100%;
+        border-radius: 0;
+        padding: 18px;
+      }
+      .modal-hero { height: 170px; border-radius: 8px; }
+      .toast {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        max-width: none;
+      }
     }
 
     @media print {
@@ -1424,6 +1460,7 @@
         <a href="#ferramentas">Ferramentas</a>
         <a href="#canvas">Canvas</a>
         <a href="#comunidade">Comunidade</a>
+        <a href="#publicar">Publicar</a>
         <a href="#equipe">Equipe</a>
       </nav>
 
@@ -1482,11 +1519,11 @@
                   </div>
                   <div class="stat-row">
                     <div class="stat-box">
-                      <strong data-count="24">0</strong>
+                      <strong data-count="24">24</strong>
                       <span>temas mapeados entre tecnologia, carreira, supply chain e sustentabilidade</span>
                     </div>
                     <div class="stat-box">
-                      <strong data-count="100">0</strong>
+                      <strong data-count="100">100</strong>
                       <span>foco em conteúdo claro, acessível e útil para quem está começando</span>
                     </div>
                   </div>
@@ -1525,19 +1562,19 @@
 
       <div class="container metrics reveal">
         <article class="metric-card">
-          <strong data-count="4">0</strong>
+          <strong data-count="4">4</strong>
           <span>pilares principais: demanda, problema, desafio e solução</span>
         </article>
         <article class="metric-card">
-          <strong data-count="6">0</strong>
+          <strong data-count="6">6</strong>
           <span>blocos de experiência no portal: artigos, glossário, quiz, fórum, newsletter e canvas</span>
         </article>
         <article class="metric-card">
-          <strong data-count="9">0</strong>
+          <strong data-count="9">9</strong>
           <span>componentes do modelo de negócios organizados em uma grade interativa</span>
         </article>
         <article class="metric-card">
-          <strong data-count="5">0</strong>
+          <strong data-count="5">5</strong>
           <span>integrantes representando a equipe do projeto integrador</span>
         </article>
       </div>
@@ -2088,15 +2125,6 @@
       localStorage.setItem(key, JSON.stringify(value));
     }
 
-    function mergeById(primary = [], secondary = []) {
-      const seen = new Set();
-      return [...primary, ...secondary].filter(item => {
-        if (!item || !item.id || seen.has(item.id)) return false;
-        seen.add(item.id);
-        return true;
-      });
-    }
-
     function getCustomPosts() {
       return loadJSON(STORAGE_KEYS.posts, []);
     }
@@ -2133,6 +2161,10 @@
       saveJSON(STORAGE_KEYS.favorites, next);
     }
 
+    function isFileMode() {
+      return location.protocol === 'file:';
+    }
+
     function formatDate(dateString) {
       const date = new Date(dateString + 'T12:00:00');
       return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
@@ -2163,7 +2195,7 @@
 
     function applyRemoteState(payload = {}) {
       if (Array.isArray(payload.posts)) {
-        setCustomPosts(mergeById(payload.posts, getCustomPosts()).slice(0, 80));
+        setCustomPosts(payload.posts.slice(0, 80));
       }
       if (Array.isArray(payload.forum)) {
         setForumPosts(payload.forum.slice(0, 30));
@@ -2178,20 +2210,23 @@
     }
 
     async function sendToServer(path, payload) {
-      if (!syncState.api) return false;
+      if (isFileMode()) return false;
       try {
         const response = await fetch(path, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-        if (!response.ok) throw new Error('sync failed');
-        applyRemoteState(await response.json());
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.detail || data.error || 'Falha ao salvar no servidor.');
+        syncState.api = true;
+        syncState.connected = true;
+        applyRemoteState(data);
         return true;
-      } catch {
+      } catch (error) {
         syncState.connected = false;
         updateSyncStatus('error', syncState.users);
-        return false;
+        throw error;
       }
     }
 
@@ -2201,7 +2236,7 @@
         : { method: 'GET' };
       const response = await fetch(path, options);
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || 'Falha na operação.');
+      if (!response.ok) throw new Error(data.detail || data.error || 'Falha na operação.');
       return data;
     }
 
@@ -2299,7 +2334,7 @@
     }
 
     async function initRealtimeSync() {
-      if (location.protocol === 'file:') {
+      if (isFileMode()) {
         updateSyncStatus('local');
         return;
       }
@@ -2519,16 +2554,20 @@
         body: body.split('\n').map(item => item.trim()).filter(Boolean)
       };
 
-      const synced = await sendToServer('/api/posts', newPost);
-      if (!synced) {
-        setCustomPosts([newPost, ...customPosts].slice(0, 80));
-        renderArticles();
+      try {
+        const synced = await sendToServer('/api/posts', newPost);
+        if (!synced) {
+          setCustomPosts([newPost, ...customPosts].slice(0, 80));
+          renderArticles();
+        }
+        event.target.reset();
+        $('#postNotice').classList.add('show');
+        setTimeout(() => $('#postNotice').classList.remove('show'), 2600);
+        showToast(synced ? 'Novo conteúdo publicado para todos.' : 'Novo conteúdo publicado neste navegador.');
+        location.hash = '#artigos';
+      } catch (error) {
+        showToast(error.message || 'Não foi possível publicar no servidor.');
       }
-      event.target.reset();
-      $('#postNotice').classList.add('show');
-      setTimeout(() => $('#postNotice').classList.remove('show'), 2600);
-      showToast(synced ? 'Novo conteúdo publicado em tempo real.' : 'Novo conteúdo publicado neste navegador.');
-      location.hash = '#artigos';
     }
 
     function renderForum() {
@@ -2554,13 +2593,18 @@
         message: $('#forumMessage').value.trim(),
         date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date())
       };
-      const synced = await sendToServer('/api/forum', newPost);
-      if (!synced) {
-        setForumPosts([newPost, ...posts, ...defaultForumPosts].slice(0, 12));
-        renderForum();
+      try {
+        const synced = await sendToServer('/api/forum', newPost);
+        if (!synced) {
+          newPost.id = 'forum-' + Date.now();
+          setForumPosts([newPost, ...posts, ...defaultForumPosts].slice(0, 12));
+          renderForum();
+        }
+        event.target.reset();
+        showToast(synced ? 'Mensagem enviada para todos.' : 'Mensagem enviada neste navegador.');
+      } catch (error) {
+        showToast(error.message || 'Não foi possível enviar no servidor.');
       }
-      event.target.reset();
-      showToast(synced ? 'Mensagem enviada para todos online.' : 'Mensagem enviada neste navegador.');
     }
 
     async function handleNewsletter(event) {
@@ -2571,12 +2615,16 @@
         email: $('#newsletterEmail').value.trim(),
         date: new Date().toISOString()
       };
-      const synced = await sendToServer('/api/newsletter', person);
-      if (!synced) setSubscribers([person, ...subscribers].slice(0, 100));
-      event.target.reset();
-      $('#newsletterNotice').classList.add('show');
-      setTimeout(() => $('#newsletterNotice').classList.remove('show'), 2600);
-      showToast(synced ? 'Inscrição registrada no servidor.' : 'Você entrou na newsletter do SmartLog.');
+      try {
+        const synced = await sendToServer('/api/newsletter', person);
+        if (!synced) setSubscribers([person, ...subscribers].slice(0, 100));
+        event.target.reset();
+        $('#newsletterNotice').classList.add('show');
+        setTimeout(() => $('#newsletterNotice').classList.remove('show'), 2600);
+        showToast(synced ? 'Inscrição registrada no servidor.' : 'Você entrou na newsletter do SmartLog.');
+      } catch (error) {
+        showToast(error.message || 'Não foi possível registrar no servidor.');
+      }
     }
 
     function initTheme() {
@@ -2637,25 +2685,9 @@
     }
 
     function setupCounters() {
-      const counters = $$('[data-count]');
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target;
-          const target = Number(el.dataset.count || 0);
-          const duration = 1200;
-          const start = performance.now();
-
-          const frame = now => {
-            const progress = Math.min((now - start) / duration, 1);
-            el.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3)));
-            if (progress < 1) requestAnimationFrame(frame);
-          };
-          requestAnimationFrame(frame);
-          observer.unobserve(el);
-        });
-      }, { threshold: 0.45 });
-      counters.forEach(counter => observer.observe(counter));
+      $$('[data-count]').forEach(counter => {
+        counter.textContent = counter.dataset.count || counter.textContent;
+      });
     }
 
     function setupBars() {
