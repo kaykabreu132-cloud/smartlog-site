@@ -14,6 +14,16 @@ Eles iniciam o servidor em `http://127.0.0.1:8000`. Com o servidor ligado, artig
 
 Se abrir `index.html` direto, o site ainda funciona, mas em modo local.
 
+## Supabase
+
+Para dados permanentes, crie as tabelas no Supabase usando `supabase_schema.sql` e configure estas variaveis no Render:
+
+- `SUPABASE_URL`: URL do projeto Supabase.
+- `SUPABASE_SECRET_KEY`: chave secreta nova do Supabase, usada somente no servidor.
+- `SUPABASE_SERVICE_ROLE_KEY`: alternativa caso seu painel mostre a chave legacy `service_role`.
+
+Nao coloque nenhuma dessas chaves dentro do `index.html`, no GitHub, em print, nem no navegador. Ela deve ficar apenas nas Environment Variables do Render.
+
 ## Publicar temporariamente
 
 Use `PUBLICAR_SMARTLOG_TEMPORARIO.bat` para abrir um tunel publico temporario com Cloudflare. A URL aparece na janela do terminal e funciona enquanto o PC, o servidor e o tunel estiverem ligados.

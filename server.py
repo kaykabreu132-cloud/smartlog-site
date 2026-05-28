@@ -5,6 +5,9 @@ import os
 import queue
 import threading
 import time
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 from datetime import datetime, timezone
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -16,6 +19,13 @@ DATA_DIR = BASE_DIR / "data"
 STATE_FILE = DATA_DIR / "state.json"
 PUBLIC_FILES = {"/", "/index.html"}
 PUBLIC_PREFIXES = ("/assets/",)
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "").rstrip("/")
+SUPABASE_KEY = (
+    os.environ.get("SUPABASE_SECRET_KEY")
+    or os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    or os.environ.get("SUPABASE_KEY")
+    or ""
+)
 
 DEFAULT_FORUM = [
     {
@@ -28,6 +38,10 @@ DEFAULT_FORUM = [
 state_lock = threading.Lock()
 clients_lock = threading.Lock()
 clients: set[queue.Queue[dict]] = set()
+
+
+class SupabaseError(RuntimeError):
+    pass
 
 
 def now_iso() -> str:
@@ -60,6 +74,102 @@ def load_state() -> dict:
 
 
 state = load_state()
+
+
+def supabase_enabled() -> bool:
+    return bool(SUPABASE_URL and SUPABASE_KEY)
+
+
+def supabase_headers(extra: dict[str, str] | None = None) -> dict[str, str]:
+    headers = {
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json",
+    }
+    if extra:
+        headers.update(extra)
+    return headers
+
+
+def supabase_request(path: str, method: str = "GET", payload: object | None = None, extra_headers: dict[str, str] | None = None) -> object:
+    if not supabase_enabled():
+        raise SupabaseError("Supabase nao configurado")
+
+    body = None if payload is None else json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    request = Request(
+        f"{SUPABASE_URL}/rest/v1/{path}",
+        data=body,
+        method=method,
+        headers=supabase_headers(extra_headers),
+    )
+
+    try:
+        with urlopen(request, timeout=12) as response:
+            raw = response.read()
+    except HTTPError as exc:
+        detail = exc.read().decode("utf-8", errors="replace")
+        raise SupabaseError(f"Supabase HTTP {exc.code}: {detail}") from exc
+    except URLError as exc:
+        raise SupabaseError(f"Supabase indisponivel: {exc}") from exc
+
+    if not raw:
+        return None
+    return json.loads(raw.decode("utf-8"))
+
+
+def load_supabase_state() -> dict:
+    posts_query = urlencode(
+        {
+            "select": "id,title,author,category,date,summary,tags,image,body",
+            "order": "created_at.desc",
+            "limit": "80",
+        }
+    )
+    forum_query = urlencode(
+        {
+            "select": "name,message,date",
+            "order": "created_at.desc",
+            "limit": "30",
+        }
+    )
+    subscribers_query = urlencode({"select": "email"})
+
+    posts = supabase_request(f"smartlog_posts?{posts_query}") or []
+    forum = supabase_request(f"smartlog_forum?{forum_query}") or []
+    subscribers = supabase_request(f"smartlog_subscribers?{subscribers_query}") or []
+
+    return {
+        "posts": posts,
+        "forum": (forum or []) + DEFAULT_FORUM,
+        "subscribers": subscribers,
+        "updatedAt": now_iso(),
+    }
+
+
+def insert_supabase_post(post: dict) -> None:
+    supabase_request(
+        "smartlog_posts?on_conflict=id",
+        method="POST",
+        payload=post,
+        extra_headers={"Prefer": "resolution=merge-duplicates,return=minimal"},
+    )
+
+
+def insert_supabase_forum_post(post: dict) -> None:
+    supabase_request(
+        "smartlog_forum",
+        method="POST",
+        payload=post,
+        extra_headers={"Prefer": "return=minimal"},
+    )
+
+
+def insert_supabase_subscriber(subscriber: dict) -> None:
+    supabase_request(
+        "smartlog_subscribers?on_conflict=email",
+        method="POST",
+        payload=subscriber,
+        extra_headers={"Prefer": "resolution=merge-duplicates,return=minimal"},
+    )
 
 
 def persist_state_locked() -> None:
@@ -131,6 +241,14 @@ def clean_subscriber(data: dict) -> dict | None:
 
 
 def public_state() -> dict:
+    if supabase_enabled():
+        try:
+            remote_state = load_supabase_state()
+            with state_lock:
+                state.update(remote_state)
+        except SupabaseError as exc:
+            print(f"Supabase fallback local: {exc}")
+
     with state_lock:
         payload = {
             "posts": list(state["posts"]),
@@ -138,6 +256,7 @@ def public_state() -> dict:
             "stats": {
                 "subscribers": len(state["subscribers"]),
                 "updatedAt": state["updatedAt"],
+                "storage": "supabase" if supabase_enabled() else "local",
             },
         }
 
@@ -178,7 +297,7 @@ class SmartLogHandler(SimpleHTTPRequestHandler):
     def do_GET(self) -> None:
         path = urlparse(self.path).path
         if path == "/api/health":
-            self.send_json(200, {"ok": True, "service": "smartlog"})
+            self.send_json(200, {"ok": True, "service": "smartlog", "storage": "supabase" if supabase_enabled() else "local"})
             return
         if path == "/api/state":
             self.send_json(200, public_state())
@@ -203,11 +322,20 @@ class SmartLogHandler(SimpleHTTPRequestHandler):
             if post is None:
                 self.send_json(400, {"error": "Artigo incompleto"})
                 return
-            with state_lock:
-                state["posts"] = [post] + [item for item in state["posts"] if item.get("id") != post["id"]]
-                state["posts"] = state["posts"][:80]
-                state["updatedAt"] = now_iso()
-                persist_state_locked()
+            if supabase_enabled():
+                try:
+                    insert_supabase_post(post)
+                    with state_lock:
+                        state.update(load_supabase_state())
+                except SupabaseError as exc:
+                    self.send_json(502, {"error": "Erro ao salvar no Supabase", "detail": str(exc)})
+                    return
+            else:
+                with state_lock:
+                    state["posts"] = [post] + [item for item in state["posts"] if item.get("id") != post["id"]]
+                    state["posts"] = state["posts"][:80]
+                    state["updatedAt"] = now_iso()
+                    persist_state_locked()
             broadcast_state()
             self.send_json(200, public_state())
             return
@@ -217,12 +345,21 @@ class SmartLogHandler(SimpleHTTPRequestHandler):
             if forum_post is None:
                 self.send_json(400, {"error": "Mensagem incompleta"})
                 return
-            with state_lock:
-                pinned = [item for item in state["forum"] if item.get("date") == "Fixado"]
-                regular = [item for item in state["forum"] if item.get("date") != "Fixado"]
-                state["forum"] = [forum_post] + regular[:28] + pinned[:1]
-                state["updatedAt"] = now_iso()
-                persist_state_locked()
+            if supabase_enabled():
+                try:
+                    insert_supabase_forum_post(forum_post)
+                    with state_lock:
+                        state.update(load_supabase_state())
+                except SupabaseError as exc:
+                    self.send_json(502, {"error": "Erro ao salvar no Supabase", "detail": str(exc)})
+                    return
+            else:
+                with state_lock:
+                    pinned = [item for item in state["forum"] if item.get("date") == "Fixado"]
+                    regular = [item for item in state["forum"] if item.get("date") != "Fixado"]
+                    state["forum"] = [forum_post] + regular[:28] + pinned[:1]
+                    state["updatedAt"] = now_iso()
+                    persist_state_locked()
             broadcast_state()
             self.send_json(200, public_state())
             return
@@ -232,13 +369,22 @@ class SmartLogHandler(SimpleHTTPRequestHandler):
             if subscriber is None:
                 self.send_json(400, {"error": "Inscricao invalida"})
                 return
-            with state_lock:
-                state["subscribers"] = [
-                    subscriber,
-                    *[item for item in state["subscribers"] if item.get("email") != subscriber["email"]],
-                ][:200]
-                state["updatedAt"] = now_iso()
-                persist_state_locked()
+            if supabase_enabled():
+                try:
+                    insert_supabase_subscriber(subscriber)
+                    with state_lock:
+                        state.update(load_supabase_state())
+                except SupabaseError as exc:
+                    self.send_json(502, {"error": "Erro ao salvar no Supabase", "detail": str(exc)})
+                    return
+            else:
+                with state_lock:
+                    state["subscribers"] = [
+                        subscriber,
+                        *[item for item in state["subscribers"] if item.get("email") != subscriber["email"]],
+                    ][:200]
+                    state["updatedAt"] = now_iso()
+                    persist_state_locked()
             broadcast_state()
             self.send_json(200, public_state())
             return
