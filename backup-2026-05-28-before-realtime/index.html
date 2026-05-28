@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SmartLog | Portal de logística</title>
+    <meta
+      name="description"
+      content="Portal SmartLog com notícias, artigos, entrevistas, agenda e comunidade sobre logística."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="SmartLog">
+        <span class="brand-mark">SL</span>
+        <span>
+          <strong>SmartLog</strong>
+          <small>Portal de logística</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#noticias">Notícias</a>
+        <a href="#guias">Guias</a>
+        <a href="#comunidade">Comunidade</a>
+        <a href="#agenda">Agenda</a>
+        <a href="#projeto">Projeto</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-button" type="button" id="themeToggle" aria-label="Alternar tema">
+          <i data-lucide="moon"></i>
+        </button>
+        <a class="primary-button compact" href="#newsletter">
+          <i data-lucide="mail-plus"></i>
+          Newsletter
+        </a>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="topline" aria-label="Atualização do portal">
+        <span>Boletim SmartLog</span>
+        <p>Novas publicações sobre logística 4.0, sustentabilidade, carreira e operações.</p>
+      </section>
+
+      <section class="news-hero" aria-labelledby="mainStoryTitle">
+        <article class="lead-story">
+          <img src="assets/warehouse-forklift.jpg" alt="Empilhadeira movimentando cargas em um armazém" />
+          <div class="lead-content">
+            <span class="section-kicker">Reportagem especial</span>
+            <h1 id="mainStoryTitle">Logística 4.0 e futuro</h1>
+            <p>
+              Entenda como automação, dados, rastreamento e sustentabilidade estão mudando a rotina de
+              armazéns, transportadoras e profissionais da área.
+            </p>
+            <div class="story-meta">
+              <span>Atualizado hoje</span>
+              <span>6 min de leitura</span>
+              <span>Por Redação SmartLog</span>
+            </div>
+            <button class="primary-button" type="button" data-open="logistica-40">
+              <i data-lucide="book-open"></i>
+              Ler matéria
+            </button>
+          </div>
+        </article>
+
+        <aside class="latest-panel" aria-labelledby="latestTitle">
+          <div class="panel-heading">
+            <span class="section-kicker">Agora no portal</span>
+            <h2 id="latestTitle">Últimas publicações</h2>
+          </div>
+          <label class="search-box" for="globalSearch">
+            <i data-lucide="search"></i>
+            <input id="globalSearch" type="search" placeholder="Buscar tema, carreira, estoque..." />
+          </label>
+          <div class="headline-list" id="headlineList" aria-live="polite"></div>
+        </aside>
+      </section>
+
+      <section class="quick-access" aria-label="Áreas do portal">
+        <a href="#noticias">
+          <i data-lucide="newspaper"></i>
+          <strong>Notícias</strong>
+          <span>Atualizações do setor em linguagem simples.</span>
+        </a>
+        <a href="#guias">
+          <i data-lucide="map"></i>
+          <strong>Guias de estudo</strong>
+          <span>Conteúdo para alunos e iniciantes.</span>
+        </a>
+        <a href="#comunidade">
+          <i data-lucide="messages-square"></i>
+          <strong>Comunidade</strong>
+          <span>Dúvidas, pautas e troca de experiências.</span>
+        </a>
+        <a href="#agenda">
+          <i data-lucide="calendar-days"></i>
+          <strong>Agenda</strong>
+          <span>Webinars, entrevistas e workshops.</span>
+        </a>
+      </section>
+
+      <section class="content-band" id="noticias">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Conteúdo</span>
+            <h2>Matérias recentes</h2>
+          </div>
+          <button class="secondary-button compact" type="button" id="clearSearch">
+            <i data-lucide="x"></i>
+            Limpar busca
+          </button>
+        </div>
+
+        <div class="toolbar" aria-label="Filtros de conteúdo">
+          <button class="filter-button active" type="button" data-filter="todos">Todos</button>
+          <button class="filter-button" type="button" data-filter="Tecnologia">Tecnologia</button>
+          <button class="filter-button" type="button" data-filter="Sustentabilidade">Sustentabilidade</button>
+          <button class="filter-button" type="button" data-filter="Carreira">Carreira</button>
+          <button class="filter-button" type="button" data-filter="Mercado">Mercado</button>
+        </div>
+
+        <div class="article-grid" id="articleGrid" aria-live="polite"></div>
+      </section>
+
+      <section class="guides-band" id="guias">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Para estudar</span>
+            <h2>Trilhas rápidas</h2>
+          </div>
+          <p>Conteúdos organizados para transformar pesquisa em apresentação, trabalho e aprendizado prático.</p>
+        </div>
+
+        <div class="guide-grid">
+          <article class="guide-card">
+            <i data-lucide="boxes"></i>
+            <h3>Estoque e armazenagem</h3>
+            <p>Conceitos de WMS, layout, separação, acuracidade e controle de materiais.</p>
+          </article>
+          <article class="guide-card">
+            <i data-lucide="route"></i>
+            <h3>Transporte e distribuição</h3>
+            <p>Rotas, prazos, custos, nível de serviço e última milha.</p>
+          </article>
+          <article class="guide-card">
+            <i data-lucide="bar-chart-3"></i>
+            <h3>Indicadores logísticos</h3>
+            <p>OTIF, lead time, giro de estoque, produtividade e atendimento ao cliente.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="split-band" id="newsletter">
+        <div class="section-heading left">
+          <span class="section-kicker">Newsletter</span>
+          <h2>Receba o resumo semanal</h2>
+          <p>Cadastro simples para simular a assinatura do portal e mostrar a proposta de relacionamento com o público.</p>
+        </div>
+
+        <form class="signup-form" id="newsletterForm">
+          <label>
+            Nome
+            <input name="name" type="text" autocomplete="name" placeholder="Seu nome" required />
+          </label>
+          <label>
+            E-mail
+            <input name="email" type="email" autocomplete="email" placeholder="voce@email.com" required />
+          </label>
+          <label>
+            Interesse principal
+            <select name="interest" required>
+              <option value="">Escolha uma área</option>
+              <option>Logística 4.0</option>
+              <option>Supply chain</option>
+              <option>Sustentabilidade</option>
+              <option>Carreira e estudos</option>
+            </select>
+          </label>
+          <button class="primary-button" type="submit">
+            <i data-lucide="mail-check"></i>
+            Assinar boletim
+          </button>
+          <p class="form-status" id="newsletterStatus" role="status"></p>
+        </form>
+      </section>
+
+      <section class="content-band alt" id="comunidade">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Comunidade</span>
+            <h2>Fórum de pautas e dúvidas</h2>
+          </div>
+          <p>Espaço para alunos e profissionais sugerirem temas, perguntas e experiências para novos conteúdos.</p>
+        </div>
+
+        <div class="community-layout">
+          <form class="discussion-form" id="discussionForm">
+            <label>
+              Título
+              <input name="title" type="text" placeholder="Ex.: Como medir prazo de entrega?" maxlength="80" required />
+            </label>
+            <label>
+              Categoria
+              <select name="category" required>
+                <option>Estudo</option>
+                <option>Mercado</option>
+                <option>Tecnologia</option>
+                <option>Carreira</option>
+              </select>
+            </label>
+            <label>
+              Mensagem
+              <textarea name="message" rows="5" maxlength="360" placeholder="Escreva sua dúvida ou pauta..." required></textarea>
+            </label>
+            <button class="secondary-button" type="submit">
+              <i data-lucide="plus-circle"></i>
+              Publicar pauta
+            </button>
+          </form>
+
+          <div class="discussion-list" id="discussionList" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="content-band" id="agenda">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Agenda</span>
+            <h2>Eventos e entrevistas</h2>
+          </div>
+          <p>Programação de conteúdo para aproximar estudantes de profissionais da área.</p>
+        </div>
+
+        <div class="event-grid" id="eventGrid"></div>
+      </section>
+
+      <section class="project-band" id="projeto">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Projeto Integrador</span>
+            <h2>Modelo de negócio do SmartLog</h2>
+          </div>
+          <p>Área de apoio para apresentar a lógica do projeto, sem tirar a aparência de portal real.</p>
+        </div>
+
+        <div class="canvas-grid" aria-label="Canvas do projeto SmartLog">
+          <article class="canvas-block partners">
+            <i data-lucide="handshake"></i>
+            <h3>Parceiros-chave</h3>
+            <p>SENAI, instituições educacionais, empresas de logística, plataformas de ensino e profissionais entrevistados.</p>
+          </article>
+          <article class="canvas-block activities">
+            <i data-lucide="settings"></i>
+            <h3>Atividades-chave</h3>
+            <p>Produção de artigos, entrevistas, vídeos, webinars, análise de tendências e interação com a comunidade.</p>
+          </article>
+          <article class="canvas-block resources">
+            <i data-lucide="briefcase-business"></i>
+            <h3>Recursos-chave</h3>
+            <p>Site, equipe de alunos, professores, especialistas, ferramentas gratuitas e curadoria de fontes confiáveis.</p>
+          </article>
+          <article class="canvas-block value">
+            <i data-lucide="gift"></i>
+            <h3>Proposta de valor</h3>
+            <p>Conteúdo gratuito, simples e atualizado sobre logística, inovação, sustentabilidade e desenvolvimento profissional.</p>
+          </article>
+          <article class="canvas-block relationship">
+            <i data-lucide="heart-handshake"></i>
+            <h3>Relacionamento</h3>
+            <p>Newsletter, fórum, comentários, entrevistas e conteúdo feito com participação dos usuários.</p>
+          </article>
+          <article class="canvas-block channels">
+            <i data-lucide="truck"></i>
+            <h3>Canais</h3>
+            <p>Website, app futuro, e-mail marketing, redes sociais, podcasts, webinars e vídeos educativos.</p>
+          </article>
+          <article class="canvas-block segments">
+            <i data-lucide="users-round"></i>
+            <h3>Segmentos</h3>
+            <p>Estudantes, profissionais da área, empresas que buscam atualização e instituições como o SENAI.</p>
+          </article>
+          <article class="canvas-block costs">
+            <i data-lucide="coins"></i>
+            <h3>Estrutura de custos</h3>
+            <p>Desenvolvimento, manutenção, produção de conteúdo, divulgação e eventuais ferramentas pagas no futuro.</p>
+          </article>
+          <article class="canvas-block revenue">
+            <i data-lucide="trending-up"></i>
+            <h3>Fluxo de receitas</h3>
+            <p>Publicidade, cursos pagos, workshops e parcerias com empresas de logística e educação.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <strong>SmartLog</strong>
+        <p>Portal protótipo do Projeto Integrador.</p>
+      </div>
+      <a class="secondary-button compact" href="#home">
+        <i data-lucide="arrow-up"></i>
+        Topo
+      </a>
+    </footer>
+
+    <dialog class="article-dialog" id="articleDialog">
+      <button class="icon-button close-dialog" type="button" id="closeDialog" aria-label="Fechar artigo">
+        <i data-lucide="x"></i>
+      </button>
+      <div id="dialogContent"></div>
+    </dialog>
+  </body>
+</html>

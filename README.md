@@ -1,0 +1,42 @@
+# SmartLog Site
+
+Portal SmartLog com visual premium, artigos, glossario, quiz, publicacao colaborativa, newsletter, mural da comunidade e Canvas do projeto.
+
+## Abrir no PC
+
+Use um destes arquivos:
+
+- `ABRIR_SMARTLOG_SITE.bat`
+- `ABRIR_SMARTLOG_FACIL.bat`
+- `C:\Users\gozem\Documents\New project\ABRIR_SITE_SMARTLOG.bat`
+
+Eles iniciam o servidor em `http://127.0.0.1:8000`. Com o servidor ligado, artigos publicados, mensagens do mural e inscricoes da newsletter ficam centralizados em `data/state.json` e sao sincronizados entre navegadores conectados.
+
+Se abrir `index.html` direto, o site ainda funciona, mas em modo local.
+
+## Publicar temporariamente
+
+Use `PUBLICAR_SMARTLOG_TEMPORARIO.bat` para abrir um tunel publico temporario com Cloudflare. A URL aparece na janela do terminal e funciona enquanto o PC, o servidor e o tunel estiverem ligados.
+
+## Hospedar online
+
+O projeto esta pronto para deploy como app Python sem dependencias externas.
+
+### Render
+
+1. Suba a pasta `smartlog-site` para um repositorio GitHub.
+2. No Render, crie um `Blueprint` usando `render.yaml`, ou crie um Web Service manual.
+3. Use:
+   - Build command: `pip install -r requirements.txt`
+   - Start command: `python server.py`
+4. Depois do deploy, acesse a URL publica do Render. O status no topo deve mudar para `Tempo real ativo`.
+
+### Outro host Python
+
+Qualquer host que rode Python 3 e mantenha um processo HTTP ativo consegue usar:
+
+```bash
+python server.py
+```
+
+Defina a variavel `PORT` se o provedor exigir uma porta especifica.

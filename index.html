@@ -1,0 +1,2558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartLog | Portal Inteligente de Logística</title>
+  <meta name="description" content="SmartLog é um portal estudantil de logística com conteúdo acessível, tendências, tecnologia, comunidade e aprendizado colaborativo." />
+  <meta name="theme-color" content="#07141b" />
+  <meta property="og:title" content="SmartLog | Portal Inteligente de Logística" />
+  <meta property="og:description" content="Portal colaborativo de logística com artigos, quiz, comunidade, newsletter e modelo de negócio Canvas." />
+  <meta property="og:type" content="website" />
+  <style>
+    :root {
+      --bg: #07141b;
+      --bg-soft: #0d1d27;
+      --surface: rgba(12, 28, 39, 0.76);
+      --surface-strong: #0f2431;
+      --surface-solid: #112838;
+      --card: linear-gradient(180deg, rgba(17, 40, 56, 0.92), rgba(10, 25, 35, 0.92));
+      --text: #eaf8fd;
+      --muted: #9dc2cf;
+      --line: rgba(164, 219, 236, 0.14);
+      --primary: #53cbe3;
+      --primary-2: #1d99bc;
+      --primary-3: #8be9ff;
+      --accent: #78f5d1;
+      --warning: #ffc96f;
+      --danger: #ff7b8a;
+      --success: #31d39a;
+      --shadow: 0 20px 60px rgba(0,0,0,0.35);
+      --glow: 0 0 0 1px rgba(139,233,255,0.08), 0 14px 40px rgba(25,146,189,0.22);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 14px;
+      --container: min(1220px, calc(100% - 32px));
+    }
+
+    body.light {
+      --bg: #f1fbff;
+      --bg-soft: #dff4fb;
+      --surface: rgba(255,255,255,0.82);
+      --surface-strong: #ffffff;
+      --surface-solid: #ffffff;
+      --card: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(243,251,255,0.96));
+      --text: #132733;
+      --muted: #587381;
+      --line: rgba(19, 39, 51, 0.10);
+      --shadow: 0 24px 60px rgba(24, 67, 94, 0.12);
+      --glow: 0 0 0 1px rgba(29,153,188,0.08), 0 14px 34px rgba(25,146,189,0.14);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(83, 203, 227, 0.17), transparent 23rem),
+        radial-gradient(circle at 82% 18%, rgba(120, 245, 209, 0.10), transparent 24rem),
+        radial-gradient(circle at 50% 100%, rgba(83, 203, 227, 0.08), transparent 28rem),
+        linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 84%, #000 16%) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,233,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,233,255,0.03) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, rgba(0,0,0,0.9), transparent 80%);
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .ambient, .ambient::before, .ambient::after {
+      content: "";
+      position: fixed;
+      width: 30rem;
+      height: 30rem;
+      border-radius: 50%;
+      filter: blur(24px);
+      opacity: 0.18;
+      pointer-events: none;
+      z-index: -1;
+      animation: drift 16s ease-in-out infinite;
+      background: radial-gradient(circle, rgba(83,203,227,0.9), transparent 70%);
+    }
+    .ambient { top: -8rem; left: -8rem; }
+    .ambient::before { top: 38vh; right: -6rem; background: radial-gradient(circle, rgba(120,245,209,0.9), transparent 70%); animation-duration: 19s; }
+    .ambient::after { bottom: -10rem; left: 38vw; background: radial-gradient(circle, rgba(83,203,227,0.75), transparent 72%); animation-duration: 22s; }
+
+    @keyframes drift {
+      0%, 100% { transform: translate3d(0,0,0) scale(1); }
+      50% { transform: translate3d(1.2rem, -1.8rem, 0) scale(1.08); }
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    img, svg { display: block; }
+    .container { width: var(--container); margin: 0 auto; }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-3), var(--primary), var(--accent));
+      z-index: 120;
+      box-shadow: 0 0 25px rgba(83,203,227,0.75);
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: -80px;
+      background: var(--surface-strong);
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 999px;
+      z-index: 99;
+    }
+    .skip-link:focus { top: 16px; }
+
+    .section {
+      padding: 76px 0;
+      position: relative;
+    }
+    .section-header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 34px;
+      flex-wrap: wrap;
+    }
+    .section-title { max-width: 760px; }
+    .label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(83, 203, 227, 0.12);
+      border: 1px solid rgba(139,233,255,0.16);
+      color: var(--primary-3);
+      font-size: 0.86rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+    }
+    body.light .label { color: var(--primary-2); }
+    h1, h2, h3, h4 { margin: 0; line-height: 1.04; letter-spacing: -0.035em; }
+    h1 { font-size: clamp(2.75rem, 5.25vw, 5.15rem); max-width: 640px; }
+    h2 { font-size: clamp(1.9rem, 3.55vw, 3.25rem); }
+    h3 { font-size: 1.18rem; line-height: 1.14; }
+    p { margin: 0; }
+    .sub {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 1.03rem;
+      max-width: 800px;
+    }
+    .gradient-text {
+      background: linear-gradient(120deg, var(--text), var(--primary-3) 44%, var(--accent));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    body.light .gradient-text {
+      background: linear-gradient(120deg, #173243, var(--primary-2) 45%, #00b996);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--bg) 82%, transparent);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      min-width: 0;
+    }
+    .brand-text strong {
+      font-size: 1.14rem;
+      letter-spacing: -0.04em;
+    }
+    .brand-text span {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+
+    .logo-badge {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(83,203,227,0.14), rgba(120,245,209,0.08));
+      border: 1px solid rgba(139,233,255,0.16);
+      display: grid;
+      place-items: center;
+      box-shadow: var(--glow);
+      flex: 0 0 auto;
+    }
+    .logo-badge svg { width: 34px; height: 34px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      flex-wrap: nowrap;
+    }
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 999px;
+      transition: 0.24s ease;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(83,203,227,0.12);
+      color: var(--text);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .sync-status {
+      min-height: 46px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 13px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.035);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .sync-status .sync-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--warning);
+      box-shadow: 0 0 0 4px rgba(255,201,111,0.1);
+    }
+    .sync-status.online {
+      color: var(--accent);
+      border-color: rgba(120,245,209,0.22);
+      background: rgba(120,245,209,0.08);
+    }
+    .sync-status.online .sync-dot {
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(49,211,154,0.12), 0 0 22px rgba(49,211,154,0.5);
+      animation: syncPulse 1.8s ease-in-out infinite;
+    }
+    .sync-status.error {
+      color: var(--warning);
+      border-color: rgba(255,201,111,0.24);
+      background: rgba(255,201,111,0.08);
+    }
+    @keyframes syncPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.72); opacity: .58; }
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 18px;
+      font-weight: 800;
+      line-height: 1;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn-primary {
+      color: #032333;
+      background: linear-gradient(135deg, var(--primary-3), var(--accent));
+      box-shadow: 0 16px 34px rgba(84, 204, 227, 0.28);
+    }
+    .btn-primary::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+    .btn-outline {
+      color: var(--text);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+    .btn-soft {
+      color: var(--primary-3);
+      background: rgba(83,203,227,0.10);
+      border: 1px solid rgba(83,203,227,0.12);
+    }
+    body.light .btn-soft { color: var(--primary-2); }
+    .icon-btn { width: 46px; height: 46px; padding: 0; border-radius: 16px; }
+    .menu-btn { display: none; }
+
+    .hero {
+      padding: 58px 0 38px;
+      overflow: clip;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(390px, 0.92fr);
+      gap: clamp(24px, 4vw, 52px);
+      align-items: start;
+    }
+    .hero-copy { position: relative; z-index: 1; }
+    .hero-copy .sub {
+      font-size: 1.02rem;
+      max-width: 620px;
+      margin-top: 20px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    .hero-mini {
+      margin-top: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .mini-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 0.92rem;
+    }
+    .mini-pill b { color: var(--text); }
+
+    .hero-panel {
+      position: relative;
+      perspective: 1000px;
+    }
+    .dash {
+      position: relative;
+      min-height: 0;
+      border-radius: 28px;
+      padding: 14px;
+      border: 1px solid rgba(139,233,255,0.12);
+      background: linear-gradient(180deg, rgba(12,30,40,0.84), rgba(8,21,30,0.88));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform .25s ease;
+    }
+    body.light .dash {
+      background: linear-gradient(180deg, rgba(255,255,255,0.88), rgba(241,251,255,0.92));
+    }
+    .dash::before,
+    .dash::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(14px);
+      opacity: .42;
+      pointer-events: none;
+    }
+    .dash::before {
+      width: 240px;
+      height: 240px;
+      right: -80px;
+      top: -80px;
+      background: radial-gradient(circle, rgba(83,203,227,0.55), transparent 70%);
+    }
+    .dash::after {
+      width: 220px;
+      height: 220px;
+      left: -60px;
+      bottom: -70px;
+      background: radial-gradient(circle, rgba(120,245,209,0.38), transparent 70%);
+    }
+
+    .dash-window {
+      height: 100%;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(8,19,27,0.66), rgba(10,25,35,0.76));
+      border: 1px solid rgba(139,233,255,0.11);
+      overflow: hidden;
+      position: relative;
+    }
+    body.light .dash-window { background: linear-gradient(180deg, rgba(251,253,255,0.94), rgba(244,250,255,0.98)); }
+    .dash-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+    .dots { display: flex; gap: 8px; }
+    .dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+    }
+    .dots span:nth-child(1) { background: #ff7d87; }
+    .dots span:nth-child(2) { background: #ffca69; }
+    .dots span:nth-child(3) { background: #4cd694; }
+    .dash-chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      max-width: 58%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dash-content {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      min-height: 0;
+      align-items: start;
+    }
+    .dash-main, .dash-side { display: grid; gap: 14px; align-content: start; }
+    .dash-side { display: none; }
+    .panel {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    body.light .panel { background: rgba(255,255,255,0.72); }
+    .hero-feature {
+      min-height: 0;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-feature::before {
+      content: "";
+      position: absolute;
+      inset: auto -40px -50px auto;
+      width: 210px;
+      height: 210px;
+      background: radial-gradient(circle, rgba(83,203,227,0.34), transparent 70%);
+      border-radius: 50%;
+      filter: blur(5px);
+    }
+    .hero-feature .feature-image {
+      margin-top: 14px;
+      min-height: 132px;
+      border-radius: 18px;
+      background:
+        linear-gradient(160deg, rgba(5,18,26,0.18), rgba(5,18,26,0.72)),
+        url("assets/warehouse-forklift.jpg") center/cover;
+      border: 1px solid rgba(139,233,255,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    body.light .hero-feature .feature-image {
+      background:
+        linear-gradient(160deg, rgba(255,255,255,0.06), rgba(13,38,49,0.5)),
+        url("assets/warehouse-forklift.jpg") center/cover;
+    }
+    .hero-feature .feature-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(139,233,255,0.18) 1px, transparent 1px),
+        linear-gradient(rgba(139,233,255,0.12) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(120deg, transparent 15%, #000 80%);
+      opacity: .45;
+    }
+    .feature-truck {
+      position: absolute;
+      inset: auto 20px 18px 20px;
+      height: 62px;
+      border-radius: 18px 18px 10px 10px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(83,203,227,0.26));
+      backdrop-filter: blur(7px);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .feature-truck::before {
+      content: "";
+      position: absolute;
+      left: 12px;
+      top: -32px;
+      width: 92px;
+      height: 46px;
+      border-radius: 16px 16px 8px 8px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(120,245,209,0.18));
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    .feature-truck::after {
+      content: "";
+      position: absolute;
+      right: 22px;
+      top: 16px;
+      width: 66px;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(120,245,209,0.2), rgba(83,203,227,0.7));
+      box-shadow: -84px 0 0 rgba(255,255,255,0.18), -168px 0 0 rgba(255,255,255,0.10);
+    }
+    .wheel, .wheel2 {
+      position: absolute;
+      bottom: -14px;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #041018, #091d28);
+      border: 4px solid rgba(255,255,255,0.24);
+    }
+    .wheel { left: 36px; }
+    .wheel2 { right: 34px; }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .stat-box {
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--line);
+    }
+    .stat-box strong {
+      display: block;
+      font-size: 1.45rem;
+      margin-bottom: 8px;
+      letter-spacing: -0.04em;
+    }
+    .stat-box span { color: var(--muted); font-size: 0.92rem; line-height: 1.45; }
+    .bar-list { display: grid; gap: 12px; }
+    .bar-item span {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .bar i {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      width: 0;
+      transition: width 1.1s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .floating-card {
+      display: none;
+      position: static;
+      width: auto;
+      margin: 14px 4px 0;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(9, 23, 31, 0.78);
+      border: 1px solid rgba(139,233,255,0.14);
+      box-shadow: 0 26px 40px rgba(0,0,0,0.24);
+      backdrop-filter: blur(14px);
+      animation: none;
+      z-index: 5;
+    }
+    body.light .floating-card { background: rgba(255,255,255,0.86); }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .floating-card b { display: block; margin-bottom: 8px; }
+    .floating-card span { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+
+    .cards-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+    }
+    .info-card, .tool-card, .canvas-card, .community-card, .publish-card, .metric-card, .article-card, .cta-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+    .info-card {
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+    .info-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(139,233,255,0.24);
+      box-shadow: 0 18px 38px rgba(0,0,0,0.25);
+    }
+    .info-card::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(83,203,227,0.16), transparent 70%);
+      pointer-events: none;
+    }
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: rgba(83,203,227,0.12);
+      margin-bottom: 16px;
+      border: 1px solid rgba(139,233,255,0.14);
+      color: var(--primary-3);
+      font-weight: 900;
+      font-size: 1.15rem;
+    }
+    body.light .card-icon { color: var(--primary-2); }
+    .info-card p {
+      color: var(--muted);
+      line-height: 1.72;
+      margin-top: 12px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 30px;
+    }
+    .metric-card {
+      padding: 22px;
+      text-align: center;
+    }
+    .metric-card strong {
+      display: block;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+      color: var(--primary-3);
+    }
+    body.light .metric-card strong { color: var(--primary-2); }
+    .metric-card span { color: var(--muted); line-height: 1.55; font-size: 0.94rem; }
+
+    .articles-wrap {
+      display: grid;
+      grid-template-columns: minmax(260px, 300px) 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .tool-card, .publish-card, .community-card, .canvas-card, .cta-card {
+      padding: 22px;
+    }
+    .sticky-tools {
+      position: sticky;
+      top: 102px;
+      display: grid;
+      gap: 18px;
+    }
+    .filter-stack { display: grid; gap: 12px; }
+    .input, .select, .textarea {
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    body.light .input, body.light .select, body.light .textarea { background: rgba(255,255,255,0.8); }
+    .input:focus, .select:focus, .textarea:focus {
+      border-color: rgba(139,233,255,0.34);
+      box-shadow: 0 0 0 4px rgba(83,203,227,0.12);
+    }
+    .textarea { resize: vertical; min-height: 132px; }
+    .hint { color: var(--muted); font-size: 0.92rem; line-height: 1.6; }
+    .meta-inline {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 16px;
+    }
+    .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(83,203,227,0.08);
+      color: var(--primary-3);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+    body.light .chip { color: var(--primary-2); }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
+    }
+    .article-card {
+      padding: 18px;
+      overflow: hidden;
+      position: relative;
+      transition: transform .24s ease, border-color .24s ease;
+    }
+    .article-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(139,233,255,0.22);
+    }
+    .article-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.06) 50%, transparent 80%);
+      transform: translateX(-100%);
+      transition: transform .8s ease;
+      pointer-events: none;
+    }
+    .article-card:hover::before { transform: translateX(100%); }
+    .article-thumb {
+      position: relative;
+      height: 170px;
+      border-radius: 18px;
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 1px solid rgba(139,233,255,0.12);
+      background:
+        linear-gradient(160deg, rgba(120,245,209,0.10), transparent 45%),
+        linear-gradient(180deg, rgba(83,203,227,0.12), rgba(0,0,0,0.08)),
+        linear-gradient(135deg, #173344, #0a1c27 72%);
+    }
+    .article-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.03);
+      filter: saturate(1.05) contrast(1.04);
+    }
+    .article-thumb.has-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,20,28,0.08), rgba(6,20,28,0.62));
+      z-index: 1;
+      pointer-events: none;
+    }
+    body.light .article-thumb {
+      background:
+        linear-gradient(160deg, rgba(120,245,209,0.10), transparent 45%),
+        linear-gradient(180deg, rgba(83,203,227,0.08), rgba(255,255,255,0.32)),
+        linear-gradient(135deg, #dff4fb, #eefaff 72%);
+    }
+    .article-thumb::after {
+      content: "";
+      position: absolute;
+      inset: auto -20px -42px auto;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(83,203,227,0.28), transparent 70%);
+      filter: blur(4px);
+      z-index: 2;
+    }
+    .thumb-lines {
+      position: absolute;
+      left: 18px;
+      top: 18px;
+      display: grid;
+      gap: 8px;
+      width: 52%;
+      z-index: 3;
+    }
+    .thumb-lines i {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.2);
+    }
+    .thumb-lines i:nth-child(2) { width: 84%; }
+    .thumb-lines i:nth-child(3) { width: 62%; }
+    .thumb-vehicle {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      width: 120px;
+      height: 50px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(83,203,227,0.26));
+      border: 1px solid rgba(255,255,255,0.14);
+      z-index: 3;
+    }
+    .thumb-vehicle::before {
+      content: "";
+      position: absolute;
+      left: -22px;
+      top: -18px;
+      width: 58px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(120,245,209,0.18));
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .thumb-wheel, .thumb-wheel2 {
+      position: absolute;
+      bottom: -10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #07141b;
+      border: 3px solid rgba(255,255,255,0.22);
+    }
+    .thumb-wheel { left: 16px; }
+    .thumb-wheel2 { right: 16px; }
+
+    .article-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .article-category {
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(83,203,227,0.10);
+      border: 1px solid rgba(83,203,227,0.14);
+      color: var(--primary-3);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+    body.light .article-category { color: var(--primary-2); }
+    .favorite {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      font-size: 1.1rem;
+    }
+    .favorite.on {
+      background: rgba(255,123,138,0.12);
+      color: var(--danger);
+      border-color: rgba(255,123,138,0.18);
+    }
+    .article-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 12px;
+    }
+    .article-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .empty {
+      grid-column: 1 / -1;
+      padding: 26px;
+      text-align: center;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed var(--line);
+      color: var(--muted);
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 18px;
+    }
+    .tool-card h3,
+    .publish-card h3,
+    .community-card h3,
+    .canvas-card h3,
+    .cta-card h3 { margin-bottom: 10px; }
+    .accordion { display: grid; gap: 12px; }
+    .acc-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+    body.light .acc-item { background: rgba(255,255,255,0.72); }
+    .acc-trigger {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 15px 16px;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      text-align: left;
+    }
+    .acc-content {
+      max-height: 0;
+      overflow: hidden;
+      color: var(--muted);
+      line-height: 1.65;
+      transition: max-height .28s ease, padding .28s ease;
+      padding: 0 16px;
+    }
+    .acc-item.open .acc-content {
+      max-height: 180px;
+      padding: 0 16px 16px;
+    }
+    .acc-item .symbol { transition: transform .24s ease; }
+    .acc-item.open .symbol { transform: rotate(45deg); }
+
+    .quiz-box { display: grid; gap: 16px; }
+    .question { font-size: 1.12rem; font-weight: 800; line-height: 1.4; }
+    .options { display: grid; gap: 10px; }
+    .option {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: left;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .option:hover { transform: translateX(4px); }
+    .option.correct { border-color: rgba(49,211,154,0.36); background: rgba(49,211,154,0.12); }
+    .option.wrong { border-color: rgba(255,123,138,0.34); background: rgba(255,123,138,0.10); }
+    .quiz-result { color: var(--muted); line-height: 1.6; }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .publish-card form,
+    .community-card form,
+    .tool-card form { display: grid; gap: 12px; }
+
+    .forum-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+      max-height: 280px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .forum-post {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+    .forum-post b { display: block; margin-bottom: 8px; }
+    .forum-post p { color: var(--muted); line-height: 1.62; }
+
+    .canvas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .canvas-card h4 {
+      margin-bottom: 12px;
+      font-size: 1rem;
+      letter-spacing: -0.03em;
+    }
+    .canvas-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      display: grid;
+      gap: 8px;
+      line-height: 1.58;
+    }
+    .canvas-wide { grid-column: span 2; }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+    .team-card {
+      padding: 18px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      text-align: center;
+    }
+    .team-avatar {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      background: linear-gradient(135deg, rgba(83,203,227,0.24), rgba(120,245,209,0.16));
+      color: var(--primary-3);
+      border: 1px solid rgba(139,233,255,0.16);
+    }
+    body.light .team-avatar { color: var(--primary-2); }
+    .team-card span {
+      display: block;
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .cta-card {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .cta-card::after {
+      content: "";
+      position: absolute;
+      right: -100px;
+      top: -80px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(83,203,227,0.22), transparent 72%);
+      pointer-events: none;
+    }
+    .cta-visual {
+      min-height: 240px;
+      border-radius: 24px;
+      background:
+        linear-gradient(160deg, rgba(83,203,227,0.18), transparent 45%),
+        linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
+        linear-gradient(135deg, #123041, #0b1d29);
+      border: 1px solid rgba(139,233,255,0.12);
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    body.light .cta-visual {
+      background:
+        linear-gradient(160deg, rgba(83,203,227,0.12), transparent 45%),
+        linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.5)),
+        linear-gradient(135deg, #ddf3fb, #f3fbff);
+    }
+    .cta-ring {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 18px solid rgba(83,203,227,0.22);
+      position: relative;
+      animation: spinSlow 13s linear infinite;
+    }
+    .cta-ring::before,
+    .cta-ring::after {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border-radius: 50%;
+      border: 12px dashed rgba(120,245,209,0.24);
+    }
+    .cta-ring::after {
+      inset: 48px;
+      border: 10px solid rgba(255,255,255,0.14);
+    }
+    @keyframes spinSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    .notice {
+      margin-top: 14px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      background: rgba(49,211,154,0.12);
+      border: 1px solid rgba(49,211,154,0.24);
+      color: #bdf7df;
+      display: none;
+    }
+    body.light .notice { color: #14563a; }
+    .notice.show { display: block; }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      background: rgba(7, 20, 27, 0.92);
+      color: #fff;
+      border: 1px solid rgba(139,233,255,0.14);
+      box-shadow: 0 20px 34px rgba(0,0,0,0.32);
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      z-index: 140;
+      max-width: min(90vw, 380px);
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 12, 18, 0.68);
+      backdrop-filter: blur(14px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 130;
+    }
+    .modal.open { display: flex; }
+    .modal-card {
+      width: min(860px, 100%);
+      max-height: min(86vh, 920px);
+      overflow: auto;
+      border-radius: 28px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      position: relative;
+    }
+    .modal-close {
+      position: sticky;
+      top: 0;
+      margin-left: auto;
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+    .modal-hero {
+      height: 220px;
+      border-radius: 22px;
+      margin: 12px 0 18px;
+      background:
+        linear-gradient(160deg, rgba(120,245,209,0.16), transparent 45%),
+        linear-gradient(180deg, rgba(83,203,227,0.10), rgba(0,0,0,0.08)),
+        linear-gradient(135deg, #173344, #0a1c27 72%);
+      border: 1px solid rgba(139,233,255,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-hero.has-image {
+      background-size: cover;
+      background-position: center;
+    }
+    .modal-hero.has-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,20,28,0.02), rgba(6,20,28,0.55));
+    }
+    body.light .modal-hero {
+      background:
+        linear-gradient(160deg, rgba(120,245,209,0.12), transparent 45%),
+        linear-gradient(180deg, rgba(83,203,227,0.08), rgba(255,255,255,0.32)),
+        linear-gradient(135deg, #dff4fb, #eefaff 72%);
+    }
+    .modal-body { color: var(--muted); line-height: 1.82; display: grid; gap: 16px; }
+
+    footer {
+      padding: 34px 0 42px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+    .footer-wrap {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .footer-wrap p { line-height: 1.65; }
+    .footer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .articles-wrap,
+      .cta-card { grid-template-columns: 1fr; }
+      .dash { min-height: auto; }
+      .floating-card { width: auto; margin-top: 14px; }
+      .sticky-tools { position: static; }
+      .cards-4,
+      .metrics,
+      .tools-grid,
+      .team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .canvas-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .canvas-wide { grid-column: span 2; }
+    }
+
+    @media (max-width: 1280px) {
+      .nav-links a { padding: 9px 10px; }
+      #printBtn { display: none; }
+    }
+
+    @media (max-width: 1040px) {
+      .nav { min-height: 74px; }
+      .menu-btn { display: inline-flex; }
+      .nav-links {
+        position: absolute;
+        left: 16px;
+        right: 16px;
+        top: calc(100% + 10px);
+        border-radius: 20px;
+        border: 1px solid var(--line);
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+        padding: 10px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        box-shadow: var(--shadow);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { text-align: center; padding: 12px 14px; }
+      .nav-actions .btn-outline:not(.icon-btn) { display: none; }
+      .sync-status { min-height: 42px; }
+    }
+
+    @media (max-width: 780px) {
+      .nav { min-height: 74px; }
+      .sync-status { display: none; }
+      .hero { padding-top: 52px; }
+      h1 { font-size: clamp(2.2rem, 10vw, 3rem); max-width: 100%; }
+      h2 { font-size: clamp(1.75rem, 8vw, 2.55rem); }
+      .hero-grid,
+      .dash-content,
+      .cards-4,
+      .metrics,
+      .tools-grid,
+      .two-col,
+      .team-grid,
+      .article-grid,
+      .canvas-grid { grid-template-columns: 1fr; }
+      .canvas-wide { grid-column: span 1; }
+      .section { padding: 76px 0; }
+      .dash-content { min-height: auto; }
+      .dash { padding: 14px; }
+      .dash-top { align-items: center; flex-direction: row; }
+      .dash-chip { max-width: 72%; }
+      .hero-feature .sub,
+      .dash .stat-row { display: none; }
+      .hero-feature .feature-image { min-height: 168px; }
+      .hero-copy .sub { line-height: 1.55; }
+      .brand-text span { display: none; }
+      .hero-actions, .hero-mini, .footer-actions { width: 100%; }
+      .hero-mini { display: none; }
+      .hero-actions .btn,
+      .tool-card form .btn,
+      .publish-card form .btn,
+      .community-card form .btn,
+      .footer-actions .btn { width: 100%; }
+      .nav-actions .btn { width: auto; }
+      .nav-actions .icon-btn { width: 42px; height: 42px; }
+      .publish-card form .two-col { grid-template-columns: 1fr !important; }
+      .article-actions { align-items: stretch; }
+      .article-actions .hint { width: 100%; }
+    }
+
+    @media print {
+      header, .progress, .floating-card, .toast, .nav-actions, .menu-btn, .btn, .forum-list, #forumForm, #postForm, #newsletterForm { display: none !important; }
+      body { background: #fff; color: #000; }
+      .section { padding: 28px 0; }
+      .info-card, .tool-card, .canvas-card, .community-card, .publish-card, .metric-card, .article-card, .cta-card, .dash, .dash-window, .panel { box-shadow: none; background: #fff !important; color: #000 !important; }
+      .sub, .hint, .forum-post p, .article-card p, .modal-body, .metric-card span, .info-card p, .canvas-card ul { color: #333 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="ambient"></div>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="SmartLog - início">
+        <span class="logo-badge" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#8BE9FF"/>
+                <stop offset="100%" stop-color="#78F5D1"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 19C19 13 27 13 37 13H50" stroke="url(#g1)" stroke-width="7" stroke-linecap="round"/>
+            <path d="M12 32C19 26 27 26 37 26H47" stroke="url(#g1)" stroke-width="7" stroke-linecap="round" opacity="0.94"/>
+            <path d="M12 45C19 39 27 39 37 39H42" stroke="url(#g1)" stroke-width="7" stroke-linecap="round" opacity="0.88"/>
+            <path d="M45 10L55 19L45 28" stroke="#EAF8FD" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong>SmartLog</strong>
+          <span>Portal inteligente de logística</span>
+        </span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#sobre">Projeto</a>
+        <a href="#artigos">Conteúdo</a>
+        <a href="#ferramentas">Ferramentas</a>
+        <a href="#canvas">Canvas</a>
+        <a href="#comunidade">Comunidade</a>
+        <a href="#equipe">Equipe</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="sync-status local" id="syncStatus" aria-live="polite">
+          <span class="sync-dot" aria-hidden="true"></span>
+          <b>Modo local</b>
+        </div>
+        <button class="btn btn-outline icon-btn" id="themeBtn" aria-label="Alternar tema">☀️</button>
+        <button class="btn btn-outline" id="printBtn">Imprimir</button>
+        <a class="btn btn-primary" href="#publicar">Publicar</a>
+        <button class="btn btn-outline icon-btn menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div class="hero-copy reveal">
+          <div class="label">Projeto Integrador • SmartLog</div>
+          <h1>Logística explicada de forma <span class="gradient-text">simples, bonita e inteligente</span>.</h1>
+          <p class="sub">O SmartLog transforma o projeto integrador em um portal funcional para estudantes, profissionais e instituições. Aqui, notícias, tendências, tecnologia e sustentabilidade em logística viram conteúdo claro, útil e acessível.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#artigos">Explorar portal</a>
+            <a class="btn btn-outline" href="#canvas">Ver modelo de negócio</a>
+          </div>
+          <div class="hero-mini">
+            <div class="mini-pill"><b>100%</b> gratuito para aprender</div>
+            <div class="mini-pill"><b>Feito por</b> alunos para alunos</div>
+            <div class="mini-pill"><b>Foco</b> em logística 4.0 e tendências</div>
+            <div class="mini-pill"><b>Live</b> publicações e mural sincronizados</div>
+          </div>
+        </div>
+
+        <div class="hero-panel reveal">
+          <div class="dash" id="heroDash">
+            <div class="dash-window">
+              <div class="dash-top">
+                <div class="dots"><span></span><span></span><span></span></div>
+                <div class="dash-chip">smartlog.edu • plataforma online</div>
+              </div>
+              <div class="dash-content">
+                <div class="dash-main">
+                  <div class="panel hero-feature">
+                    <div class="label">Destaque do portal</div>
+                    <h3>Logística 4.0 e o futuro das operações</h3>
+                    <p class="sub" style="font-size:.96rem; margin-top:10px;">Integração digital, automação, dados em tempo real e aprendizagem colaborativa reunidos em um só lugar.</p>
+                    <div class="feature-image" aria-hidden="true">
+                      <div class="feature-truck">
+                        <div class="wheel"></div>
+                        <div class="wheel2"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="stat-row">
+                    <div class="stat-box">
+                      <strong data-count="24">0</strong>
+                      <span>temas mapeados entre tecnologia, carreira, supply chain e sustentabilidade</span>
+                    </div>
+                    <div class="stat-box">
+                      <strong data-count="100">0</strong>
+                      <span>foco em conteúdo claro, acessível e útil para quem está começando</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dash-side">
+                  <div class="panel">
+                    <h3>Tendências acompanhadas</h3>
+                    <p class="hint" style="margin-top:10px;">Áreas que o SmartLog pretende traduzir para o público com linguagem direta.</p>
+                    <div class="bar-list" style="margin-top:16px;">
+                      <div class="bar-item"><span><b>Automação</b><b>92%</b></span><div class="bar"><i style="--w:92%"></i></div></div>
+                      <div class="bar-item"><span><b>Sustentabilidade</b><b>85%</b></span><div class="bar"><i style="--w:85%"></i></div></div>
+                      <div class="bar-item"><span><b>Gestão de estoque</b><b>78%</b></span><div class="bar"><i style="--w:78%"></i></div></div>
+                    </div>
+                  </div>
+                  <div class="panel">
+                    <h3>Proposta de valor</h3>
+                    <div class="chip-row">
+                      <span class="chip">Artigos</span>
+                      <span class="chip">Entrevistas</span>
+                      <span class="chip">Newsletter</span>
+                      <span class="chip">Comunidade</span>
+                    </div>
+                    <p class="hint" style="margin-top:14px;">Conteúdo atualizado, inovação logística, materiais educativos e troca de conhecimento entre estudantes e profissionais.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="floating-card">
+              <b>SmartLog em ação</b>
+              <span>Um hub digital criado com ferramentas acessíveis, pensado para publicar notícias, dicas, tendências e conteúdo feito pelos próprios alunos.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container metrics reveal">
+        <article class="metric-card">
+          <strong data-count="4">0</strong>
+          <span>pilares principais: demanda, problema, desafio e solução</span>
+        </article>
+        <article class="metric-card">
+          <strong data-count="6">0</strong>
+          <span>blocos de experiência no portal: artigos, glossário, quiz, fórum, newsletter e canvas</span>
+        </article>
+        <article class="metric-card">
+          <strong data-count="9">0</strong>
+          <span>componentes do modelo de negócios organizados em uma grade interativa</span>
+        </article>
+        <article class="metric-card">
+          <strong data-count="5">0</strong>
+          <span>integrantes representando a equipe do projeto integrador</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="sobre">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Base do projeto</div>
+            <h2>Da ideia no papel para um portal que realmente comunica.</h2>
+            <p class="sub" style="margin-top:16px;">A estrutura abaixo segue o raciocínio apresentado no pitch do SmartLog: a logística muda rápido, a informação está espalhada e difícil de entender, e por isso nasce a necessidade de um canal simples, gratuito e feito com propósito educacional.</p>
+          </div>
+        </div>
+
+        <div class="cards-4">
+          <article class="info-card reveal">
+            <div class="card-icon">01</div>
+            <h3>Demanda</h3>
+            <p>A logística evolui o tempo todo com novas tecnologias, novos formatos de entrega e crescente preocupação com sustentabilidade. Quem estuda ou trabalha na área precisa se atualizar para não ficar para trás.</p>
+          </article>
+          <article class="info-card reveal">
+            <div class="card-icon">02</div>
+            <h3>Problema</h3>
+            <p>Boa parte das informações está espalhada em vários sites, muitas vezes com linguagem técnica demais. Para estudantes e iniciantes, isso dificulta encontrar conteúdo claro, confiável e fácil de entender.</p>
+          </article>
+          <article class="info-card reveal">
+            <div class="card-icon">03</div>
+            <h3>Desafio</h3>
+            <p>O desafio do projeto foi reunir notícias, tendências e dicas de logística em um só canal, sem gastar dinheiro, aproveitando ferramentas gratuitas e conhecimentos desenvolvidos em sala de aula.</p>
+          </article>
+          <article class="info-card reveal">
+            <div class="card-icon">04</div>
+            <h3>Solução</h3>
+            <p>O SmartLog vira um canal focado em explicar logística de um jeito acessível. Os próprios alunos produzem conteúdos, aprendem mais no processo e compartilham conhecimento com outras pessoas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="artigos">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Portal de conteúdo</div>
+            <h2>Artigos, tendências e temas que fazem sentido para a logística atual.</h2>
+            <p class="sub" style="margin-top:16px;">O núcleo do SmartLog é um portal simples de explorar. Você pode buscar conteúdo, filtrar por categoria, favoritar artigos e até publicar novos textos diretamente pelo site.</p>
+          </div>
+        </div>
+
+        <div class="articles-wrap">
+          <aside class="sticky-tools reveal">
+            <div class="tool-card">
+              <h3>Buscar conteúdo</h3>
+              <p class="hint">Explore os temas do portal e encontre assuntos relevantes de forma rápida.</p>
+              <div class="filter-stack" style="margin-top:16px;">
+                <input id="searchInput" class="input" type="search" placeholder="Ex.: WMS, sustentabilidade, carreira..." />
+                <select id="categoryFilter" class="select">
+                  <option>Todos</option>
+                  <option>Tendências</option>
+                  <option>Sustentabilidade</option>
+                  <option>Tecnologia</option>
+                  <option>Dicas</option>
+                  <option>Carreira</option>
+                </select>
+                <select id="sortFilter" class="select">
+                  <option value="recentes">Mais recentes</option>
+                  <option value="az">Ordem alfabética</option>
+                  <option value="favoritos">Favoritos primeiro</option>
+                </select>
+              </div>
+              <div class="meta-inline">
+                <span><b id="articleCount">0</b> artigos no portal</span>
+              </div>
+            </div>
+
+            <div class="tool-card">
+              <h3>Proposta do SmartLog</h3>
+              <p class="hint">Um lugar só para conteúdos atualizados, materiais educativos e troca de conhecimento entre alunos e profissionais.</p>
+              <div class="chip-row">
+                <span class="chip">Canal educacional</span>
+                <span class="chip">Atualização contínua</span>
+                <span class="chip">Acesso gratuito</span>
+              </div>
+            </div>
+          </aside>
+
+          <div class="article-grid reveal" id="articleGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ferramentas">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Experiência interativa</div>
+            <h2>Ferramentas extras para tornar o portal mais útil e menos genérico.</h2>
+            <p class="sub" style="margin-top:16px;">Além dos artigos, o SmartLog ganha recursos de apoio para estudo e engajamento: glossário, quiz e newsletter integrada.</p>
+          </div>
+        </div>
+
+        <div class="tools-grid">
+          <article class="tool-card reveal">
+            <h3>Glossário inteligente</h3>
+            <p class="hint">Conceitos importantes explicados de forma direta.</p>
+            <div id="glossary" class="accordion" style="margin-top:16px;"></div>
+          </article>
+
+          <article class="tool-card reveal">
+            <h3>Quiz rápido de logística</h3>
+            <p class="hint">Teste conhecimentos básicos sobre conceitos da área.</p>
+            <div class="quiz-box" id="quizBox" style="margin-top:16px;"></div>
+          </article>
+
+          <article class="tool-card reveal">
+            <h3>Newsletter SmartLog</h3>
+            <p class="hint">Receba novidades, tendências e novos conteúdos do portal.</p>
+            <form id="newsletterForm" style="margin-top:16px;">
+              <input class="input" id="newsletterName" type="text" placeholder="Seu nome" required />
+              <input class="input" id="newsletterEmail" type="email" placeholder="Seu e-mail" required />
+              <button class="btn btn-primary" type="submit">Quero receber atualizações</button>
+            </form>
+            <div class="notice" id="newsletterNotice">Inscrição registrada com sucesso.</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="publicar">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Conteúdo colaborativo</div>
+            <h2>Publique um novo artigo e faça o portal crescer com a comunidade.</h2>
+            <p class="sub" style="margin-top:16px;">Como o projeto propõe conteúdo feito pelos próprios alunos, esta área permite publicar novos artigos diretamente no portal e mostrar como a plataforma funcionaria na prática.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="publish-card reveal">
+            <h3>Enviar novo conteúdo</h3>
+            <p class="hint">Preencha os campos abaixo para adicionar um artigo ao portal.</p>
+            <form id="postForm" style="margin-top:16px;">
+              <input class="input" id="postTitle" type="text" placeholder="Título do artigo" required />
+              <div class="two-col" style="grid-template-columns: 1fr 1fr; gap:12px;">
+                <input class="input" id="postAuthor" type="text" placeholder="Autor" required />
+                <select class="select" id="postCategory" required>
+                  <option value="Tendências">Tendências</option>
+                  <option value="Sustentabilidade">Sustentabilidade</option>
+                  <option value="Tecnologia">Tecnologia</option>
+                  <option value="Dicas">Dicas</option>
+                  <option value="Carreira">Carreira</option>
+                </select>
+              </div>
+              <input class="input" id="postTags" type="text" placeholder="Tags separadas por vírgula" />
+              <textarea class="textarea" id="postSummary" placeholder="Resumo curto do artigo" required></textarea>
+              <textarea class="textarea" id="postBody" placeholder="Escreva o conteúdo do artigo. Você pode pular linhas para separar parágrafos." required></textarea>
+              <button class="btn btn-primary" type="submit">Publicar no portal</button>
+            </form>
+            <div class="notice" id="postNotice">Conteúdo publicado no portal.</div>
+          </article>
+
+          <article class="cta-card reveal">
+            <div>
+              <div class="label">Visual premium</div>
+              <h3>Agora o SmartLog parece um projeto de verdade, não só um layout genérico.</h3>
+              <p class="sub" style="margin-top:16px;">Este redesign traz identidade visual melhor, efeitos suaves, hierarquia de informação e uma logo em SVG mais limpa, coerente com a ideia de fluxo, movimentação e inteligência logística.</p>
+              <div class="chip-row">
+                <span class="chip">Logo corrigida</span>
+                <span class="chip">Efeitos visuais</span>
+                <span class="chip">Mais presença</span>
+              </div>
+            </div>
+            <div class="cta-visual" aria-hidden="true">
+              <div class="cta-ring"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="canvas">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Modelo de negócios Canvas</div>
+            <h2>Os 9 blocos do projeto organizados de forma mais clara.</h2>
+            <p class="sub" style="margin-top:16px;">O canvas do SmartLog foi convertido em uma estrutura legível dentro do site, preservando a lógica apresentada no material do projeto.</p>
+          </div>
+        </div>
+
+        <div class="canvas-grid">
+          <article class="canvas-card reveal">
+            <h4>Parceiros-chave</h4>
+            <ul>
+              <li>SENAI e outras instituições educacionais</li>
+              <li>Empresas do setor de logística</li>
+              <li>Plataformas de ensino e cursos online</li>
+              <li>Profissionais da área para conteúdo exclusivo</li>
+            </ul>
+          </article>
+          <article class="canvas-card reveal">
+            <h4>Atividades-chave</h4>
+            <ul>
+              <li>Criação e manutenção de conteúdo</li>
+              <li>Desenvolvimento do site ou app</li>
+              <li>Interação contínua com a comunidade</li>
+              <li>Análises de tendências e mercado</li>
+            </ul>
+          </article>
+          <article class="canvas-card reveal">
+            <h4>Proposta de valor</h4>
+            <ul>
+              <li>Acesso gratuito a conteúdo atualizado</li>
+              <li>Inovações tecnológicas e práticas sustentáveis</li>
+              <li>Comunidade com troca de conhecimento</li>
+              <li>Facilidade de acesso a materiais educativos</li>
+            </ul>
+          </article>
+          <article class="canvas-card reveal">
+            <h4>Relacionamento com o cliente</h4>
+            <ul>
+              <li>Fóruns e grupos de discussão</li>
+              <li>Newsletter com novas atualizações</li>
+              <li>Engajamento na plataforma</li>
+              <li>Contato contínuo com alunos e profissionais</li>
+            </ul>
+          </article>
+          <article class="canvas-card reveal">
+            <h4>Segmentos de clientes</h4>
+            <ul>
+              <li>Estudantes de logística</li>
+              <li>Profissionais da área</li>
+              <li>Empresas que buscam atualização</li>
+              <li>Instituições educacionais</li>
+            </ul>
+          </article>
+          <article class="canvas-card reveal">
+            <h4>Recursos-chave</h4>
+            <ul>
+              <li>Plataforma online</li>
+              <li>Artigos, entrevistas e vídeos</li>
+              <li>Equipe de professores e especialistas</li>
+              <li>Tecnologia e ferramentas de desenvolvimento</li>
+            </ul>
+          </article>
+          <article class="canvas-card reveal">
+            <h4>Canais</h4>
+            <ul>
+              <li>Plataforma online (site ou app)</li>
+              <li>E-mail marketing</li>
+              <li>Webinars, podcasts e vídeos educativos</li>
+              <li>Newsletter de atualizações</li>
+            </ul>
+          </article>
+          <article class="canvas-card canvas-wide reveal">
+            <h4>Estrutura de custos</h4>
+            <ul>
+              <li>Desenvolvimento e manutenção do site ou app</li>
+              <li>Produção de conteúdo como pesquisas, entrevistas e vídeos</li>
+              <li>Marketing digital e divulgação nas redes</li>
+              <li>Custos com plataformas externas pagas, se necessário</li>
+              <li>Equipe de especialistas e professores</li>
+            </ul>
+          </article>
+          <article class="canvas-card canvas-wide reveal">
+            <h4>Fluxo de receitas</h4>
+            <ul>
+              <li>Publicidade em espaços da plataforma</li>
+              <li>Cursos pagos ou workshops sobre logística</li>
+              <li>Parcerias com empresas de logística e educação</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="comunidade">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Comunidade</div>
+            <h2>Interação com alunos e profissionais dentro do próprio portal.</h2>
+            <p class="sub" style="margin-top:16px;">Como o canvas cita relacionamento com o cliente por fóruns e troca de conhecimento, o SmartLog também ganha um espaço simples de interação.</p>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <article class="community-card reveal">
+            <h3>Fórum rápido</h3>
+            <p class="hint">Deixe sugestões de pauta, dúvidas ou comentários para movimentar a comunidade.</p>
+            <form id="forumForm" style="margin-top:16px;">
+              <input class="input" id="forumName" type="text" placeholder="Seu nome" required />
+              <textarea class="textarea" id="forumMessage" placeholder="Escreva sua mensagem" required></textarea>
+              <button class="btn btn-primary" type="submit">Enviar mensagem</button>
+            </form>
+          </article>
+          <article class="community-card reveal">
+            <h3>Mural da comunidade</h3>
+            <p class="hint">As mensagens aparecem no mural para demonstrar a proposta de comunidade do portal.</p>
+            <div class="forum-list" id="forumList"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="equipe">
+      <div class="container">
+        <div class="section-header reveal">
+          <div class="section-title">
+            <div class="label">Equipe do projeto</div>
+            <h2>Quem está por trás da ideia SmartLog.</h2>
+            <p class="sub" style="margin-top:16px;">Os integrantes abaixo foram mantidos com base na apresentação do projeto integrador.</p>
+          </div>
+        </div>
+
+        <div class="team-grid">
+          <article class="team-card reveal"><div class="team-avatar">E</div><h3>Emerson Leandro Rodrigues</h3><span>Equipe SmartLog</span></article>
+          <article class="team-card reveal"><div class="team-avatar">I</div><h3>Isadora Desidério Castheloge</h3><span>Equipe SmartLog</span></article>
+          <article class="team-card reveal"><div class="team-avatar">K</div><h3>Kayk Póvoa Abreu</h3><span>Equipe SmartLog</span></article>
+          <article class="team-card reveal"><div class="team-avatar">R</div><h3>Rhuan de Souza Neves</h3><span>Equipe SmartLog</span></article>
+          <article class="team-card reveal"><div class="team-avatar">V</div><h3>Vitor Hugo Ribeiro Caetano</h3><span>Equipe SmartLog</span></article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-wrap">
+      <p><b>SmartLog</b> • Portal funcional inspirado no projeto integrador.<br/>Conceito baseado no pitch/canvas do projeto, convertido em experiência web interativa.</p>
+      <div class="footer-actions">
+        <a class="btn btn-outline" href="#inicio">Voltar ao topo</a>
+        <a class="btn btn-primary" href="#publicar">Adicionar conteúdo</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="articleModal" aria-hidden="true">
+    <div class="modal-card">
+      <button class="modal-close" id="closeModal" aria-label="Fechar artigo">✕</button>
+      <div class="chip-row" id="modalTags"></div>
+      <h2 id="modalTitle" style="margin-top:14px;"></h2>
+      <p class="hint" id="modalMeta" style="margin-top:10px;"></p>
+      <div class="modal-hero" aria-hidden="true"></div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEYS = {
+      theme: 'smartlog_theme_v2',
+      posts: 'smartlog_posts_v2',
+      favorites: 'smartlog_favorites_v2',
+      forum: 'smartlog_forum_v2',
+      subscribers: 'smartlog_subscribers_v2',
+      lastSync: 'smartlog_last_sync_v2'
+    };
+
+    const basePosts = [
+      {
+        id: 'logistica-4-0',
+        title: 'Logística 4.0: o que muda na prática?',
+        author: 'Equipe SmartLog',
+        category: 'Tendências',
+        date: '2026-03-27',
+        summary: 'Automação, integração digital e uso inteligente de dados tornam os processos logísticos mais rápidos e previsíveis.',
+        tags: ['Logística 4.0', 'Automação', 'Dados'],
+        image: 'assets/warehouse-forklift.jpg',
+        body: [
+          'Logística 4.0 representa a aplicação de tecnologias digitais nos processos logísticos. Isso aparece em sistemas integrados, sensores, rastreamento e análise de dados em tempo real.',
+          'Na prática, a logística passa a ser mais conectada. A empresa consegue identificar problemas mais cedo, reduzir falhas e agir com mais velocidade antes que o atraso chegue ao cliente.',
+          'Para estudantes, o principal entendimento é que a logística atual vai muito além de transporte e estoque. Ela envolve informação, inteligência operacional e tomada de decisão baseada em dados.'
+        ]
+      },
+      {
+        id: 'sustentabilidade-logistica',
+        title: 'Sustentabilidade na logística: por que importa?',
+        author: 'Equipe SmartLog',
+        category: 'Sustentabilidade',
+        date: '2026-03-26',
+        summary: 'Planejamento de rotas, redução de desperdício e escolha de processos mais eficientes ajudam o negócio e o meio ambiente.',
+        tags: ['ESG', 'Rotas', 'Meio ambiente'],
+        image: 'assets/container-yard.jpg',
+        body: [
+          'Sustentabilidade na logística significa operar de forma mais eficiente, reduzindo desperdícios, consumo desnecessário de combustível e impactos ambientais.',
+          'Uma rota melhor planejada reduz custo, tempo e emissão. Embalagens adequadas e processos bem organizados evitam perdas e melhoram a imagem da empresa.',
+          'Esse tema importa porque o mercado e a sociedade cobram operações mais responsáveis em toda a cadeia de suprimentos.'
+        ]
+      },
+      {
+        id: 'wms-explicado',
+        title: 'WMS explicado de um jeito simples',
+        author: 'Equipe SmartLog',
+        category: 'Tecnologia',
+        date: '2026-03-25',
+        summary: 'WMS é o sistema que ajuda a organizar o armazém e controlar melhor as movimentações de estoque.',
+        tags: ['WMS', 'Armazém', 'Estoque'],
+        image: 'assets/warehouse-conveyor.jpg',
+        body: [
+          'WMS significa Warehouse Management System. Em português, é um sistema de gerenciamento de armazém.',
+          'Ele ajuda a localizar itens, organizar entrada e saída de produtos, reduzir erros e melhorar a produtividade das operações.',
+          'Uma forma fácil de entender é pensar no WMS como um mapa inteligente do estoque, dizendo onde guardar e onde encontrar cada item.'
+        ]
+      },
+      {
+        id: 'last-mile',
+        title: 'Last mile: a etapa que decide a experiência do cliente',
+        author: 'Equipe SmartLog',
+        category: 'Dicas',
+        date: '2026-03-24',
+        summary: 'A última milha é a fase final da entrega e uma das mais sensíveis da operação logística.',
+        tags: ['Entrega', 'Cliente', 'Transporte'],
+        image: 'assets/urban-delivery.jpg',
+        body: [
+          'Last mile é o trecho final da entrega até o cliente. Mesmo parecendo pequeno, ele costuma ser decisivo para a satisfação do consumidor.',
+          'Atrasos, erro de endereço, ausência do cliente e comunicação ruim tornam essa etapa complexa.',
+          'Empresas tentam melhorar essa fase com rastreamento, pontos de retirada, roteirização e atualização constante de status.'
+        ]
+      },
+      {
+        id: 'carreira-logistica',
+        title: 'Como começar na área de logística',
+        author: 'Equipe SmartLog',
+        category: 'Carreira',
+        date: '2026-03-23',
+        summary: 'Uma visão inicial para quem quer desenvolver repertório, estudar melhor e construir espaço no mercado logístico.',
+        tags: ['Carreira', 'Estudantes', 'Mercado'],
+        image: 'assets/urban-delivery.jpg',
+        body: [
+          'Quem está começando na área de logística pode focar em conceitos básicos como estoque, transporte, cadeia de suprimentos, armazenagem e indicadores.',
+          'Além disso, é importante acompanhar portais, desenvolver resumos, praticar ferramentas simples e participar de projetos acadêmicos.',
+          'O SmartLog nasce justamente para ajudar nesse ponto: transformar pesquisa em conteúdo acessível e útil para quem aprende e para quem consulta.'
+        ]
+      },
+      {
+        id: 'supply-chain',
+        title: 'Supply Chain não é só transporte',
+        author: 'Equipe SmartLog',
+        category: 'Tendências',
+        date: '2026-03-22',
+        summary: 'Supply Chain integra fornecedores, produção, estoque, distribuição e cliente final em uma visão única.',
+        tags: ['Supply Chain', 'Gestão', 'Integração'],
+        image: 'assets/container-yard.jpg',
+        body: [
+          'Supply Chain, ou cadeia de suprimentos, é o conjunto completo de etapas que leva o produto da origem até o consumidor.',
+          'Ela envolve fornecedores, compras, produção, armazenagem, transporte, distribuição, tecnologia e atendimento.',
+          'Quando a cadeia funciona de forma integrada, a empresa reduz falhas, melhora prazos e toma decisões com mais segurança.'
+        ]
+      }
+    ];
+
+    const categoryImages = {
+      'Tendências': 'assets/container-yard.jpg',
+      'Sustentabilidade': 'assets/container-yard.jpg',
+      'Tecnologia': 'assets/warehouse-conveyor.jpg',
+      'Dicas': 'assets/urban-delivery.jpg',
+      'Carreira': 'assets/urban-delivery.jpg'
+    };
+
+    const defaultForumPosts = [
+      {
+        name: 'Equipe SmartLog',
+        message: 'Bem-vindo ao mural. Compartilhe ideias de temas, dúvidas ou sugestões para novos artigos.',
+        date: 'Fixado'
+      }
+    ];
+
+    const syncState = {
+      api: false,
+      connected: false,
+      source: null,
+      users: 0
+    };
+
+    const glossaryItems = [
+      { term: 'Supply Chain', desc: 'Cadeia de suprimentos completa, da origem ao cliente final.' },
+      { term: 'WMS', desc: 'Sistema de gerenciamento de armazém usado para organizar e controlar estoque e movimentações.' },
+      { term: 'Last Mile', desc: 'Última etapa da entrega, quando o produto chega ao consumidor.' },
+      { term: 'Roteirização', desc: 'Planejamento de rotas para reduzir tempo, custo e atrasos nas entregas.' },
+      { term: 'Logística Reversa', desc: 'Retorno de produtos, embalagens ou materiais para troca, descarte, reparo ou reaproveitamento.' }
+    ];
+
+    const quizQuestions = [
+      {
+        q: 'Qual é a principal função de um WMS?',
+        options: ['Organizar e controlar o armazém', 'Criar campanhas publicitárias', 'Substituir transportadoras'],
+        answer: 0,
+        explain: 'WMS é um sistema voltado para o gerenciamento do armazém e do estoque.'
+      },
+      {
+        q: 'O que significa last mile?',
+        options: ['Primeira etapa da produção', 'Etapa final da entrega ao cliente', 'Tipo de embalagem logística'],
+        answer: 1,
+        explain: 'Last mile é a última fase da entrega, quando o produto chega ao consumidor.'
+      },
+      {
+        q: 'Qual prática combina com logística sustentável?',
+        options: ['Ignorar rotas', 'Aumentar desperdícios', 'Planejar rotas mais eficientes'],
+        answer: 2,
+        explain: 'Rotas eficientes economizam tempo, reduzem custo e diminuem impacto ambiental.'
+      }
+    ];
+
+    let quizIndex = 0;
+    let score = 0;
+    let selectedAnswered = false;
+
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => [...document.querySelectorAll(selector)];
+
+    const escapeHTML = (value = '') => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+
+    function loadJSON(key, fallback) {
+      try {
+        const value = JSON.parse(localStorage.getItem(key));
+        return value ?? fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function mergeById(primary = [], secondary = []) {
+      const seen = new Set();
+      return [...primary, ...secondary].filter(item => {
+        if (!item || !item.id || seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      });
+    }
+
+    function getCustomPosts() {
+      return loadJSON(STORAGE_KEYS.posts, []);
+    }
+
+    function setCustomPosts(posts) {
+      saveJSON(STORAGE_KEYS.posts, posts);
+    }
+
+    function getAllPosts() {
+      return [...getCustomPosts(), ...basePosts];
+    }
+
+    function getForumPosts() {
+      return loadJSON(STORAGE_KEYS.forum, defaultForumPosts);
+    }
+
+    function setForumPosts(posts) {
+      saveJSON(STORAGE_KEYS.forum, posts.length ? posts : defaultForumPosts);
+    }
+
+    function getSubscribers() {
+      return loadJSON(STORAGE_KEYS.subscribers, []);
+    }
+
+    function setSubscribers(subscribers) {
+      saveJSON(STORAGE_KEYS.subscribers, subscribers);
+    }
+
+    function getFavorites() {
+      return loadJSON(STORAGE_KEYS.favorites, []);
+    }
+
+    function setFavorites(next) {
+      saveJSON(STORAGE_KEYS.favorites, next);
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString + 'T12:00:00');
+      return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+    }
+
+    function showToast(message) {
+      const toast = $('#toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.toastTimer);
+      window.toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+
+    function updateSyncStatus(mode = 'local', users = 0) {
+      const el = $('#syncStatus');
+      if (!el) return;
+      el.classList.remove('online', 'error', 'local');
+      el.classList.add(mode);
+      const label = el.querySelector('b');
+      if (mode === 'online') {
+        label.textContent = users > 1 ? `Tempo real • ${users} online` : 'Tempo real ativo';
+      } else if (mode === 'error') {
+        label.textContent = 'Reconectando';
+      } else {
+        label.textContent = 'Modo local';
+      }
+    }
+
+    function applyRemoteState(payload = {}) {
+      if (Array.isArray(payload.posts)) {
+        setCustomPosts(mergeById(payload.posts, getCustomPosts()).slice(0, 80));
+      }
+      if (Array.isArray(payload.forum)) {
+        setForumPosts(payload.forum.slice(0, 30));
+      }
+      if (payload.stats?.online !== undefined) {
+        syncState.users = Number(payload.stats.online) || 0;
+      }
+      localStorage.setItem(STORAGE_KEYS.lastSync, new Date().toISOString());
+      renderArticles();
+      renderForum();
+      if (syncState.api) updateSyncStatus(syncState.connected ? 'online' : 'error', syncState.users);
+    }
+
+    async function sendToServer(path, payload) {
+      if (!syncState.api) return false;
+      try {
+        const response = await fetch(path, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error('sync failed');
+        applyRemoteState(await response.json());
+        return true;
+      } catch {
+        syncState.connected = false;
+        updateSyncStatus('error', syncState.users);
+        return false;
+      }
+    }
+
+    async function initRealtimeSync() {
+      if (location.protocol === 'file:') {
+        updateSyncStatus('local');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/state', { cache: 'no-store' });
+        if (!response.ok) throw new Error('api unavailable');
+        syncState.api = true;
+        syncState.connected = true;
+        applyRemoteState(await response.json());
+        updateSyncStatus('online', syncState.users);
+
+        const source = new EventSource('/api/events');
+        syncState.source = source;
+        source.onopen = () => {
+          syncState.connected = true;
+          updateSyncStatus('online', syncState.users);
+        };
+        source.onmessage = event => {
+          try {
+            applyRemoteState(JSON.parse(event.data));
+          } catch {
+            updateSyncStatus('error', syncState.users);
+          }
+        };
+        source.onerror = () => {
+          syncState.connected = false;
+          updateSyncStatus('error', syncState.users);
+        };
+      } catch {
+        syncState.api = false;
+        syncState.connected = false;
+        updateSyncStatus('local');
+      }
+    }
+
+    function articleThumb(post) {
+      if (post?.image) {
+        return `
+          <div class="article-thumb has-image" aria-hidden="true">
+            <img src="${escapeHTML(post.image)}" alt="" loading="lazy" />
+            <div class="thumb-lines"><i></i><i></i><i></i></div>
+            <div class="thumb-vehicle">
+              <div class="thumb-wheel"></div>
+              <div class="thumb-wheel2"></div>
+            </div>
+          </div>`;
+      }
+
+      return `
+        <div class="article-thumb" aria-hidden="true">
+          <div class="thumb-lines"><i></i><i></i><i></i></div>
+          <div class="thumb-vehicle">
+            <div class="thumb-wheel"></div>
+            <div class="thumb-wheel2"></div>
+          </div>
+        </div>`;
+    }
+
+    function renderArticles() {
+      const query = $('#searchInput').value.trim().toLowerCase();
+      const category = $('#categoryFilter').value;
+      const sort = $('#sortFilter').value;
+      const favs = getFavorites();
+
+      let posts = getAllPosts().filter(post => {
+        const haystack = [post.title, post.author, post.category, post.summary, ...(post.tags || [])].join(' ').toLowerCase();
+        const matchQuery = !query || haystack.includes(query);
+        const matchCategory = category === 'Todos' || post.category === category;
+        return matchQuery && matchCategory;
+      });
+
+      if (sort === 'az') posts.sort((a, b) => a.title.localeCompare(b.title));
+      if (sort === 'recentes') posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      if (sort === 'favoritos') {
+        posts.sort((a, b) => Number(favs.includes(b.id)) - Number(favs.includes(a.id)) || new Date(b.date) - new Date(a.date));
+      }
+
+      $('#articleCount').textContent = getAllPosts().length;
+
+      const grid = $('#articleGrid');
+      if (!posts.length) {
+        grid.innerHTML = '<div class="empty">Nenhum artigo encontrado. Tente outro termo ou publique um novo conteúdo.</div>';
+        return;
+      }
+
+      grid.innerHTML = posts.map(post => `
+        <article class="article-card">
+          ${articleThumb(post)}
+          <div class="article-head">
+            <span class="article-category">${escapeHTML(post.category)}</span>
+            <button class="favorite ${favs.includes(post.id) ? 'on' : ''}" data-fav="${post.id}" aria-label="Favoritar artigo">${favs.includes(post.id) ? '♥' : '♡'}</button>
+          </div>
+          <h3>${escapeHTML(post.title)}</h3>
+          <p>${escapeHTML(post.summary)}</p>
+          <div class="chip-row">${(post.tags || []).slice(0,3).map(tag => `<span class="chip">${escapeHTML(tag)}</span>`).join('')}</div>
+          <div class="article-actions">
+            <span class="hint">Por ${escapeHTML(post.author)} • ${formatDate(post.date)}</span>
+            <button class="btn btn-soft" data-read="${post.id}">Ler artigo</button>
+          </div>
+        </article>
+      `).join('');
+
+      $$('[data-read]').forEach(btn => btn.addEventListener('click', () => openArticle(btn.dataset.read)));
+      $$('[data-fav]').forEach(btn => btn.addEventListener('click', () => toggleFavorite(btn.dataset.fav)));
+    }
+
+    function openArticle(id) {
+      const post = getAllPosts().find(item => item.id === id);
+      if (!post) return;
+      $('#modalTags').innerHTML = `<span class="chip">${escapeHTML(post.category)}</span>` + (post.tags || []).map(tag => `<span class="chip">${escapeHTML(tag)}</span>`).join('');
+      $('#modalTitle').textContent = post.title;
+      $('#modalMeta').textContent = `Por ${post.author} • ${formatDate(post.date)}`;
+      const modalHero = $('#articleModal .modal-hero');
+      modalHero.classList.toggle('has-image', Boolean(post.image));
+      modalHero.style.backgroundImage = post.image ? `linear-gradient(180deg, rgba(6,20,28,0.02), rgba(6,20,28,0.58)), url("${post.image}")` : '';
+      const parts = Array.isArray(post.body) ? post.body : [post.body];
+      $('#modalBody').innerHTML = parts.map(item => `<p>${escapeHTML(item)}</p>`).join('');
+      $('#articleModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeArticle() {
+      $('#articleModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function toggleFavorite(id) {
+      const favs = getFavorites();
+      const next = favs.includes(id) ? favs.filter(item => item !== id) : [...favs, id];
+      setFavorites(next);
+      renderArticles();
+      showToast(next.includes(id) ? 'Artigo favoritado.' : 'Favorito removido.');
+    }
+
+    function renderGlossary() {
+      $('#glossary').innerHTML = glossaryItems.map((item, index) => `
+        <div class="acc-item ${index === 0 ? 'open' : ''}">
+          <button class="acc-trigger" type="button">
+            <span>${escapeHTML(item.term)}</span>
+            <span class="symbol">+</span>
+          </button>
+          <div class="acc-content">${escapeHTML(item.desc)}</div>
+        </div>
+      `).join('');
+
+      $$('.acc-trigger').forEach(trigger => trigger.addEventListener('click', () => {
+        trigger.closest('.acc-item').classList.toggle('open');
+      }));
+    }
+
+    function renderQuiz() {
+      const box = $('#quizBox');
+      const q = quizQuestions[quizIndex];
+      selectedAnswered = false;
+      box.innerHTML = `
+        <div class="question">${quizIndex + 1}. ${escapeHTML(q.q)}</div>
+        <div class="options">
+          ${q.options.map((option, index) => `<button class="option" type="button" data-option="${index}">${escapeHTML(option)}</button>`).join('')}
+        </div>
+        <div class="quiz-result" id="quizResult">Pontuação: ${score}/${quizQuestions.length}</div>
+      `;
+      $$('.option').forEach(btn => btn.addEventListener('click', () => answerQuiz(Number(btn.dataset.option))));
+    }
+
+    function answerQuiz(index) {
+      if (selectedAnswered) return;
+      selectedAnswered = true;
+      const q = quizQuestions[quizIndex];
+      const buttons = $$('.option');
+      buttons.forEach((btn, i) => {
+        if (i === q.answer) btn.classList.add('correct');
+        if (i === index && i !== q.answer) btn.classList.add('wrong');
+      });
+      if (index === q.answer) score++;
+      $('#quizResult').innerHTML = `${index === q.answer ? '✅ Acertou!' : '❌ Quase!'} ${q.explain}<br><br>Pontuação: ${score}/${quizQuestions.length}`;
+      setTimeout(() => {
+        quizIndex++;
+        if (quizIndex >= quizQuestions.length) {
+          $('#quizBox').innerHTML = `
+            <div class="question">Resultado final: ${score}/${quizQuestions.length}</div>
+            <p class="quiz-result">${score === quizQuestions.length ? 'Mandou muito bem. Você já pegou a lógica dos conceitos básicos.' : 'Boa! Você pode revisar o glossário e tentar novamente para reforçar o conteúdo.'}</p>
+            <button class="btn btn-primary" id="restartQuiz" type="button">Refazer quiz</button>
+          `;
+          $('#restartQuiz').addEventListener('click', () => {
+            quizIndex = 0;
+            score = 0;
+            renderQuiz();
+          });
+        } else {
+          renderQuiz();
+        }
+      }, 1600);
+    }
+
+    async function handlePostSubmit(event) {
+      event.preventDefault();
+      const customPosts = getCustomPosts();
+      const title = $('#postTitle').value.trim();
+      const author = $('#postAuthor').value.trim();
+      const category = $('#postCategory').value;
+      const summary = $('#postSummary').value.trim();
+      const body = $('#postBody').value.trim();
+      const tags = $('#postTags').value.split(',').map(tag => tag.trim()).filter(Boolean);
+
+      const newPost = {
+        id: 'aluno-' + Date.now(),
+        title,
+        author,
+        category,
+        date: new Date().toISOString().slice(0, 10),
+        summary,
+        tags: tags.length ? tags : ['Aluno', 'SmartLog'],
+        image: categoryImages[category] || 'assets/warehouse-forklift.jpg',
+        body: body.split('\n').map(item => item.trim()).filter(Boolean)
+      };
+
+      const synced = await sendToServer('/api/posts', newPost);
+      if (!synced) {
+        setCustomPosts([newPost, ...customPosts].slice(0, 80));
+        renderArticles();
+      }
+      event.target.reset();
+      $('#postNotice').classList.add('show');
+      setTimeout(() => $('#postNotice').classList.remove('show'), 2600);
+      showToast(synced ? 'Novo conteúdo publicado em tempo real.' : 'Novo conteúdo publicado neste navegador.');
+      location.hash = '#artigos';
+    }
+
+    function renderForum() {
+      const posts = getForumPosts();
+      $('#forumList').innerHTML = posts.map(post => `
+        <div class="forum-post">
+          <b>${escapeHTML(post.name)}</b>
+          <p>${escapeHTML(post.message)}</p>
+          ${post.date ? `<span class="hint">${escapeHTML(post.date)}</span>` : ''}
+        </div>
+      `).join('');
+    }
+
+    async function handleForumSubmit(event) {
+      event.preventDefault();
+      const posts = getForumPosts().filter(post => post.date !== 'Fixado');
+      const newPost = {
+        name: $('#forumName').value.trim(),
+        message: $('#forumMessage').value.trim(),
+        date: new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }).format(new Date())
+      };
+      const synced = await sendToServer('/api/forum', newPost);
+      if (!synced) {
+        setForumPosts([newPost, ...posts, ...defaultForumPosts].slice(0, 12));
+        renderForum();
+      }
+      event.target.reset();
+      showToast(synced ? 'Mensagem enviada para todos online.' : 'Mensagem enviada neste navegador.');
+    }
+
+    async function handleNewsletter(event) {
+      event.preventDefault();
+      const subscribers = getSubscribers();
+      const person = {
+        name: $('#newsletterName').value.trim(),
+        email: $('#newsletterEmail').value.trim(),
+        date: new Date().toISOString()
+      };
+      const synced = await sendToServer('/api/newsletter', person);
+      if (!synced) setSubscribers([person, ...subscribers].slice(0, 100));
+      event.target.reset();
+      $('#newsletterNotice').classList.add('show');
+      setTimeout(() => $('#newsletterNotice').classList.remove('show'), 2600);
+      showToast(synced ? 'Inscrição registrada no servidor.' : 'Você entrou na newsletter do SmartLog.');
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem(STORAGE_KEYS.theme);
+      if (saved === 'light') document.body.classList.add('light');
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      $('#themeBtn').textContent = document.body.classList.contains('light') ? '🌙' : '☀️';
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const current = document.body.classList.contains('light') ? 'light' : 'dark';
+      localStorage.setItem(STORAGE_KEYS.theme, current);
+      updateThemeIcon();
+      showToast(current === 'light' ? 'Tema claro ativado.' : 'Tema escuro ativado.');
+    }
+
+    function setupNav() {
+      $('#menuBtn').addEventListener('click', () => $('#navLinks').classList.toggle('open'));
+      $$('#navLinks a').forEach(link => link.addEventListener('click', () => $('#navLinks').classList.remove('open')));
+
+      const sections = ['sobre', 'artigos', 'ferramentas', 'canvas', 'comunidade', 'equipe'].map(id => document.getElementById(id));
+      const links = $$('#navLinks a');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+          }
+        });
+      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0.01 });
+      sections.forEach(section => observer.observe(section));
+    }
+
+    function setupReveal() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      $$('.reveal').forEach(item => observer.observe(item));
+    }
+
+    function setupProgress() {
+      const update = () => {
+        const scrollTop = window.scrollY;
+        const height = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = height > 0 ? (scrollTop / height) * 100 : 0;
+        $('#progress').style.width = progress + '%';
+      };
+      update();
+      window.addEventListener('scroll', update, { passive: true });
+    }
+
+    function setupCounters() {
+      const counters = $$('[data-count]');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const target = Number(el.dataset.count || 0);
+          const duration = 1200;
+          const start = performance.now();
+
+          const frame = now => {
+            const progress = Math.min((now - start) / duration, 1);
+            el.textContent = Math.round(target * (1 - Math.pow(1 - progress, 3)));
+            if (progress < 1) requestAnimationFrame(frame);
+          };
+          requestAnimationFrame(frame);
+          observer.unobserve(el);
+        });
+      }, { threshold: 0.45 });
+      counters.forEach(counter => observer.observe(counter));
+    }
+
+    function setupBars() {
+      const bars = $$('.bar i');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.width = entry.target.style.getPropertyValue('--w');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      bars.forEach(bar => observer.observe(bar));
+    }
+
+    function setupHeroTilt() {
+      const card = $('#heroDash');
+      if (!card || window.matchMedia('(max-width: 1100px)').matches) return;
+      const dash = card.querySelector('.dash');
+      card.addEventListener('mousemove', event => {
+        const rect = card.getBoundingClientRect();
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        const rotateY = (px - 0.5) * 10;
+        const rotateX = (0.5 - py) * 8;
+        dash.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        dash.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      });
+    }
+
+    function boot() {
+      initTheme();
+      renderArticles();
+      renderGlossary();
+      renderQuiz();
+      renderForum();
+      setupNav();
+      setupReveal();
+      setupProgress();
+      setupCounters();
+      setupBars();
+      setupHeroTilt();
+      initRealtimeSync();
+
+      $('#themeBtn').addEventListener('click', toggleTheme);
+      $('#printBtn').addEventListener('click', () => window.print());
+      $('#searchInput').addEventListener('input', renderArticles);
+      $('#categoryFilter').addEventListener('change', renderArticles);
+      $('#sortFilter').addEventListener('change', renderArticles);
+      $('#postForm').addEventListener('submit', handlePostSubmit);
+      $('#forumForm').addEventListener('submit', handleForumSubmit);
+      $('#newsletterForm').addEventListener('submit', handleNewsletter);
+      $('#closeModal').addEventListener('click', closeArticle);
+      $('#articleModal').addEventListener('click', event => { if (event.target.id === 'articleModal') closeArticle(); });
+      document.addEventListener('keydown', event => { if (event.key === 'Escape') closeArticle(); });
+    }
+
+    document.addEventListener('DOMContentLoaded', boot);
+  </script>
+</body>
+</html>
