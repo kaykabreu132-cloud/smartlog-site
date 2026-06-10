@@ -1,7 +1,7 @@
 {
   "name": "SmartLog",
   "short_name": "SmartLog",
-  "description": "Portal técnico de logística com conteúdo, quiz, Canvas e demonstração local.",
+  "description": "Portal de logística com conteúdo, quiz, Canvas e comunidade.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

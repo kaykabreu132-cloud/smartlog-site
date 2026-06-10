@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>SmartLog | Portal Técnico de Logística</title>
-  <meta name="description" content="SmartLog é um portal estudantil de logística com artigos, quiz, Canvas, demonstração local, PWA offline e arquitetura simples em GitHub Pages." />
+  <title>SmartLog | Portal de Logística</title>
+  <meta name="description" content="SmartLog é um portal de logística com artigos, ferramentas de estudo, comunidade e Canvas do projeto." />
   <meta name="theme-color" content="#0c1613" />
   <meta name="color-scheme" content="dark light" />
   <meta name="robots" content="index, follow" />
-  <meta property="og:title" content="SmartLog | Portal Técnico de Logística" />
-  <meta property="og:description" content="Projeto estudantil de logística com experiência mobile, PWA offline e demonstração técnica estática." />
+  <meta property="og:title" content="SmartLog | Portal de Logística" />
+  <meta property="og:description" content="Conteúdos, ferramentas e comunidade para estudar logística de forma clara e prática." />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="assets/warehouse-forklift.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -555,7 +555,7 @@
       align-items: start;
     }
 
-    .demo-note {
+    .notice-note {
       border-left: 4px solid var(--yellow);
       padding: 12px 14px;
       background: rgba(243, 204, 104, 0.10);
@@ -588,9 +588,9 @@
     }
 
     .data-tools {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .tech-grid {
@@ -894,13 +894,13 @@
             <path d="M8 10h5M8 14h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </span>
-        <span>SmartLog <small>Portal técnico de logística</small></span>
+        <span>SmartLog <small>Portal inteligente de logística</small></span>
       </a>
       <nav class="nav-links" id="navLinks" aria-label="Navegação principal">
         <a href="#conteudo">Conteúdo</a>
         <a href="#ferramentas">Ferramentas</a>
-        <a href="#publicar">Demo</a>
-        <a href="#tecnico">Técnico</a>
+        <a href="#publicar">Comunidade</a>
+        <a href="#solucoes">Soluções</a>
         <a href="#canvas">Canvas</a>
         <a href="#equipe">Equipe</a>
       </nav>
@@ -933,21 +933,21 @@
           <span class="eyebrow">Projeto Integrador SENAI</span>
           <div>
             <h1 id="heroTitle">SmartLog</h1>
-            <p class="lead">Portal técnico de logística criado para apresentar conteúdo, quiz, Canvas, demonstração local e uma experiência mobile pronta para abrir por link.</p>
+            <p class="lead">Conteúdos, ferramentas e comunidade para quem quer entender logística com clareza, prática e visão de mercado.</p>
           </div>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#conteudo">Explorar conteúdo</a>
-            <a class="btn btn-secondary" href="#tecnico">Ver parte técnica</a>
+            <a class="btn btn-secondary" href="#publicar">Participar</a>
           </div>
           <div class="status-row" aria-label="Resumo do projeto">
-            <article class="status-card"><strong>100%</strong><span>estático para GitHub Pages, sem servidor e sem banco obrigatório</span></article>
-            <article class="status-card"><strong>PWA</strong><span>instalável, com cache offline após o primeiro acesso</span></article>
-            <article class="status-card"><strong>JSON</strong><span>exportação e importação dos dados da demonstração local</span></article>
-            <article class="status-card"><strong>Mobile</strong><span>layout pensado para a apresentação pelo celular</span></article>
+            <article class="status-card"><strong>4</strong><span>artigos essenciais para começar no tema</span></article>
+            <article class="status-card"><strong>Quiz</strong><span>perguntas rápidas para testar conhecimento</span></article>
+            <article class="status-card"><strong>Canvas</strong><span>modelo do projeto organizado em blocos</span></article>
+            <article class="status-card"><strong>Mobile</strong><span>experiência pronta para acessar pelo celular</span></article>
           </div>
         </div>
 
-        <aside class="hero-panel" aria-label="Status técnico">
+        <aside class="hero-panel" aria-label="Destaques do SmartLog">
           <div class="system-row">
             <span class="system-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
@@ -956,10 +956,10 @@
               </svg>
             </span>
             <div>
-              <strong>Hospedagem</strong>
-              <span>GitHub Pages</span>
+              <strong>Conteúdo guiado</strong>
+              <span>Artigos objetivos sobre logística moderna</span>
             </div>
-            <span class="pill">sem backend</span>
+            <span class="pill">estudo</span>
           </div>
           <div class="system-row">
             <span class="system-icon" aria-hidden="true">
@@ -969,10 +969,10 @@
               </svg>
             </span>
             <div>
-              <strong>Dados demo</strong>
-              <span>localStorage v2</span>
+              <strong>Comunidade</strong>
+              <span>Espaço para ideias, dúvidas e participação</span>
             </div>
-            <span class="pill">exportável</span>
+            <span class="pill">interação</span>
           </div>
           <div class="system-row">
             <span class="system-icon" aria-hidden="true">
@@ -982,10 +982,10 @@
               </svg>
             </span>
             <div>
-              <strong>Status</strong>
-              <span id="networkBadge">Verificando conexão</span>
+              <strong>Aprendizado</strong>
+              <span id="networkBadge">Quiz, glossário e Canvas em um só lugar</span>
             </div>
-            <span class="pill" id="pwaBadge">PWA pronto</span>
+            <span class="pill" id="pwaBadge">prático</span>
           </div>
         </aside>
       </div>
@@ -997,7 +997,7 @@
           <div class="section-copy">
             <span class="eyebrow">Portal de conteúdo</span>
             <h2>Logística clara, pesquisável e com cara de produto real.</h2>
-            <p class="muted">Busque, filtre e abra artigos. A base principal já vem no site; artigos criados na demo ficam guardados apenas no navegador atual.</p>
+            <p class="muted">Busque, filtre e abra artigos pensados para explicar conceitos importantes da logística moderna.</p>
           </div>
           <div class="section-actions">
             <button class="btn btn-secondary" id="copyLinkBtn" type="button">Copiar link</button>
@@ -1008,7 +1008,7 @@
         <div class="portal-grid">
           <aside class="panel filters">
             <h3>Encontrar conteúdo</h3>
-            <p class="muted">Mostra que o portal é navegável e organizado, mesmo hospedado de forma simples.</p>
+            <p class="muted">Encontre rapidamente temas, categorias e conteúdos relevantes para estudo.</p>
             <label class="field-label" for="searchInput">Busca
               <input class="input" id="searchInput" type="search" placeholder="Buscar por tema..." autocomplete="off" />
             </label>
@@ -1040,7 +1040,7 @@
           <div class="section-copy">
             <span class="eyebrow">Ferramentas</span>
             <h2>Recursos rápidos para mostrar domínio do tema.</h2>
-            <p class="muted">Glossário e quiz rodam localmente no navegador e ajudam a transformar o site em uma apresentação interativa.</p>
+            <p class="muted">Glossário e quiz ajudam a revisar conceitos e fixar o conteúdo de forma mais dinâmica.</p>
           </div>
         </div>
 
@@ -1050,7 +1050,7 @@
             <div class="accordion" id="glossary"></div>
           </article>
           <article class="tool-card">
-            <h3>Quiz técnico</h3>
+            <h3>Quiz rápido</h3>
             <div class="quiz-box" id="quizBox"></div>
           </article>
         </div>
@@ -1061,16 +1061,16 @@
       <div class="container">
         <div class="section-header">
           <div class="section-copy">
-            <span class="eyebrow">Demonstração local</span>
-            <h2>Interação sem complicar a hospedagem.</h2>
-            <p class="muted">Esta área simula publicação e comunidade usando armazenamento do próprio navegador. É ideal para apresentação; sincronização real entre celulares entra em uma versão futura com backend.</p>
+            <span class="eyebrow">Comunidade</span>
+            <h2>Participe com ideias, dúvidas e conteúdos.</h2>
+            <p class="muted">O SmartLog também funciona como um espaço de troca para estudantes, visitantes e pessoas interessadas em logística.</p>
           </div>
         </div>
 
         <div class="two-col">
           <form class="panel publish-form" id="postForm">
-            <h3>Adicionar artigo demo</h3>
-            <p class="demo-note">O artigo aparece neste dispositivo e pode ser exportado em JSON. Nada é enviado para servidor.</p>
+            <h3>Enviar artigo</h3>
+            <p class="notice-note">Compartilhe uma ideia, experiência ou explicação sobre logística para enriquecer o portal.</p>
             <label class="field-label" for="postTitle">Título
               <input class="input" id="postTitle" type="text" placeholder="Ex.: Roteirização inteligente" required minlength="4" maxlength="80" />
             </label>
@@ -1093,12 +1093,12 @@
             <label class="field-label" for="postBody">Texto
               <textarea class="textarea" id="postBody" placeholder="Texto do artigo" required minlength="20" maxlength="1500"></textarea>
             </label>
-            <button class="btn btn-primary" type="submit">Adicionar na demo</button>
+            <button class="btn btn-primary" type="submit">Publicar artigo</button>
           </form>
 
           <div class="panel forum-panel">
-            <h3>Mural demo</h3>
-            <p class="demo-note">Simula participação do público sem cadastro. As mensagens também ficam só no navegador atual.</p>
+            <h3>Mural da comunidade</h3>
+            <p class="notice-note">Use este espaço para deixar uma pergunta, sugestão ou comentário sobre o projeto.</p>
             <form class="field-stack" id="forumForm">
               <label class="field-label" for="forumName">Nome
                 <input class="input" id="forumName" type="text" placeholder="Seu nome" required minlength="2" maxlength="45" />
@@ -1106,50 +1106,47 @@
               <label class="field-label" for="forumMessage">Mensagem
                 <textarea class="textarea" id="forumMessage" placeholder="Mensagem para o mural" required minlength="4" maxlength="260"></textarea>
               </label>
-              <button class="btn btn-soft" type="submit">Enviar mensagem demo</button>
+              <button class="btn btn-soft" type="submit">Enviar mensagem</button>
             </form>
             <div class="data-tools">
-              <button class="btn btn-secondary" id="exportBtn" type="button">Exportar JSON</button>
-              <button class="btn btn-secondary" id="importBtn" type="button">Importar JSON</button>
-              <button class="btn btn-danger" id="resetDemoBtn" type="button">Limpar demo</button>
+              <button class="btn btn-danger" id="resetCommunityBtn" type="button">Limpar mural</button>
             </div>
-            <input class="sr-only" id="importFile" type="file" accept="application/json,.json" />
             <div class="forum-list" id="forumList" aria-live="polite"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="tecnico">
+    <section class="section" id="solucoes">
       <div class="container">
         <div class="section-header">
           <div class="section-copy">
-            <span class="eyebrow">Arquitetura técnica</span>
-            <h2>Simples de hospedar, mas com acabamento de aplicação.</h2>
-            <p class="muted">A proposta técnica é reduzir dependências: o site abre por GitHub Pages, funciona no celular e mantém uma demonstração local controlada.</p>
+            <span class="eyebrow">Soluções</span>
+            <h2>Um portal completo para aprender, consultar e participar.</h2>
+            <p class="muted">O SmartLog reúne conteúdo, ferramentas e interação em uma experiência direta para estudantes e visitantes.</p>
           </div>
         </div>
 
         <div class="tech-grid">
           <article class="tech-card">
-            <h3>Fluxo do sistema</h3>
+            <h3>Como o SmartLog ajuda</h3>
             <div class="architecture">
-              <div class="architecture-step"><b>1</b><div><strong>GitHub Pages</strong><p class="muted">Entrega os arquivos HTML, CSS, JS e imagens como site estático gratuito.</p></div></div>
-              <div class="architecture-step"><b>2</b><div><strong>Navegador do usuário</strong><p class="muted">Executa filtros, quiz, modal, formulários e armazenamento local sem servidor.</p></div></div>
-              <div class="architecture-step"><b>3</b><div><strong>localStorage v2</strong><p class="muted">Guarda posts e mural da demonstração no dispositivo atual, com exportação/importação em JSON.</p></div></div>
-              <div class="architecture-step"><b>4</b><div><strong>Service Worker</strong><p class="muted">Cria cache básico para o site abrir novamente mesmo com conexão instável.</p></div></div>
+              <div class="architecture-step"><b>1</b><div><strong>Aprender conceitos</strong><p class="muted">Artigos organizados por categoria explicam termos, processos e desafios da logística.</p></div></div>
+              <div class="architecture-step"><b>2</b><div><strong>Revisar rapidamente</strong><p class="muted">Glossário e quiz ajudam a fixar o conteúdo antes de uma apresentação ou avaliação.</p></div></div>
+              <div class="architecture-step"><b>3</b><div><strong>Participar da comunidade</strong><p class="muted">O mural abre espaço para perguntas, sugestões e comentários sobre o projeto.</p></div></div>
+              <div class="architecture-step"><b>4</b><div><strong>Entender o projeto</strong><p class="muted">O Canvas mostra a proposta de valor, público, canais e próximos caminhos do SmartLog.</p></div></div>
             </div>
           </article>
 
           <article class="tech-card">
-            <h3>Critérios técnicos</h3>
+            <h3>Diferenciais</h3>
             <div class="metric-grid">
-              <div class="metric"><strong>PWA</strong><span class="muted">Manifest, tema, ícone e cache offline básico.</span></div>
-              <div class="metric"><strong>SEO</strong><span class="muted">Metadados, Open Graph e estrutura semântica.</span></div>
-              <div class="metric"><strong>A11y</strong><span class="muted">Labels, foco visível, modal acessível e teclado.</span></div>
-              <div class="metric"><strong>Mobile</strong><span class="muted">Layout sem sobreposição e botões com área de toque confortável.</span></div>
+              <div class="metric"><strong>Clareza</strong><span class="muted">Textos diretos, linguagem simples e foco em exemplos práticos.</span></div>
+              <div class="metric"><strong>Busca</strong><span class="muted">Filtros e categorias para encontrar conteúdo sem perder tempo.</span></div>
+              <div class="metric"><strong>Interação</strong><span class="muted">Quiz, mural e publicação de artigos deixam o portal mais vivo.</span></div>
+              <div class="metric"><strong>Celular</strong><span class="muted">Interface pensada para navegação rápida em telas pequenas.</span></div>
             </div>
-            <p class="demo-note">Limite atual: GitHub Pages sozinho não sincroniza dados entre pessoas. Para isso, a próxima versão precisaria de backend, banco ou serviço externo.</p>
+            <p class="notice-note">A proposta é aproximar estudantes do universo logístico com uma experiência simples, bonita e fácil de usar.</p>
           </article>
         </div>
       </div>
@@ -1182,7 +1179,7 @@
 
   <footer>
     <div class="container footer-wrap">
-      <p><strong>SmartLog</strong><br />Versão técnica, estática e pronta para GitHub Pages.</p>
+      <p><strong>SmartLog</strong><br />Portal inteligente de logística para estudo, conteúdo e comunidade.</p>
       <a class="btn btn-secondary" href="#inicio">Voltar ao topo</a>
     </div>
   </footer>
@@ -1203,7 +1200,7 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script>
-    const STORAGE_KEY = 'smartlog_demo_v2';
+    const STORAGE_KEY = 'smartlog_community_v2';
     const THEME_KEY = 'smartlog_theme_v2';
 
     const basePosts = [
@@ -1270,7 +1267,7 @@
       ['WMS', 'Sistema usado para controlar estoque, armazenagem e movimentações dentro de um armazém.'],
       ['Last Mile', 'Última etapa da entrega, quando o produto chega ao consumidor.'],
       ['Logística Reversa', 'Processo de retorno de produtos, embalagens ou materiais para troca, descarte ou reaproveitamento.'],
-      ['PWA', 'Aplicação web que pode ser instalada e abrir com cache offline após o primeiro acesso.']
+      ['Roteirização', 'Planejamento de rotas para reduzir tempo, custo e falhas nas entregas.']
     ];
 
     const quiz = [
@@ -1291,12 +1288,6 @@
         options: ['Aumentar desperdício', 'Ignorar rotas', 'Planejar rotas melhores'],
         answer: 2,
         explain: 'Rotas melhores reduzem custo, tempo e impacto.'
-      },
-      {
-        q: 'Por que GitHub Pages não sincroniza posts sozinho?',
-        options: ['Porque ele serve arquivos estáticos', 'Porque não abre em celular', 'Porque só funciona com Python'],
-        answer: 0,
-        explain: 'GitHub Pages não executa backend; ele entrega arquivos estáticos.'
       }
     ];
 
@@ -1308,7 +1299,7 @@
       ['Segmentos', ['Estudantes', 'Profissionais iniciantes', 'Instituições de ensino']],
       ['Recursos-chave', ['Site online', 'Artigos', 'Equipe do projeto']],
       ['Canais', ['Site', 'Redes sociais', 'Apresentações e eventos']],
-      ['Custos', ['Hospedagem gratuita', 'Produção de conteúdo', 'Manutenção visual']],
+      ['Custos', ['Produção de conteúdo', 'Identidade visual', 'Manutenção e atualização']],
       ['Receitas futuras', ['Parcerias', 'Cursos', 'Publicidade educacional']]
     ];
 
@@ -1334,7 +1325,7 @@
         version: 2,
         posts: [],
         forum: [
-          { name: 'Equipe SmartLog', message: 'Bem-vindo ao mural demo. Use para mostrar a proposta de comunidade.', date: 'Fixado' }
+          { name: 'Equipe SmartLog', message: 'Bem-vindo ao mural da comunidade. Use este espaço para trocar ideias sobre logística.', date: 'Fixado' }
         ]
       };
     }
@@ -1399,7 +1390,7 @@
 
       $('#articleCount').textContent = `${posts.length} artigo${posts.length === 1 ? '' : 's'} encontrado${posts.length === 1 ? '' : 's'}.`;
       $('#articleGrid').innerHTML = posts.length ? posts.map(post => {
-        const isDemo = String(post.id).startsWith('demo-');
+        const isCommunityPost = String(post.id).startsWith('community-') || String(post.id).startsWith('demo-');
         return `
           <article class="article-card">
             <img src="${esc(post.image)}" alt="" loading="lazy" width="640" height="420" />
@@ -1407,10 +1398,10 @@
               <div class="article-meta"><span>${esc(post.category)}</span><span>${formatDate(post.date)}</span></div>
               <h3>${esc(post.title)}</h3>
               <p class="muted">${esc(post.summary)}</p>
-              <div class="tag-row">${(post.tags || []).map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}${isDemo ? '<span class="tag">Demo local</span>' : ''}</div>
+              <div class="tag-row">${(post.tags || []).map(tag => `<span class="tag">${esc(tag)}</span>`).join('')}${isCommunityPost ? '<span class="tag">Comunidade</span>' : ''}</div>
               <div class="inline-actions">
                 <button class="btn btn-soft" type="button" data-open="${esc(post.id)}">Ler artigo</button>
-                ${isDemo ? `<button class="btn btn-danger" type="button" data-delete-post="${esc(post.id)}">Apagar</button>` : ''}
+                ${isCommunityPost ? `<button class="btn btn-danger" type="button" data-delete-post="${esc(post.id)}">Apagar</button>` : ''}
               </div>
             </div>
           </article>
@@ -1418,7 +1409,7 @@
       }).join('') : '<div class="empty">Nenhum conteúdo encontrado.</div>';
 
       $$('[data-open]').forEach(button => button.addEventListener('click', () => openArticle(button.dataset.open)));
-      $$('[data-delete-post]').forEach(button => button.addEventListener('click', () => deleteDemoPost(button.dataset.deletePost)));
+      $$('[data-delete-post]').forEach(button => button.addEventListener('click', () => deleteCommunityPost(button.dataset.deletePost)));
     }
 
     function openArticle(id) {
@@ -1443,12 +1434,12 @@
       if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus();
     }
 
-    function deleteDemoPost(id) {
+    function deleteCommunityPost(id) {
       const state = loadState();
       state.posts = state.posts.filter(post => post.id !== id);
       saveState(state);
       renderArticles();
-      showToast('Artigo demo apagado deste dispositivo.');
+      showToast('Artigo removido.');
     }
 
     function renderGlossary() {
@@ -1530,7 +1521,7 @@
       state.forum.splice(index, 1);
       saveState(state);
       renderForum();
-      showToast('Mensagem demo apagada deste dispositivo.');
+      showToast('Mensagem removida.');
     }
 
     function renderCanvas() {
@@ -1558,13 +1549,13 @@
         if (!validateForm(event.target)) return;
         const state = loadState();
         const post = {
-          id: 'demo-' + Date.now(),
+          id: 'community-' + Date.now(),
           title: $('#postTitle').value.trim(),
           author: $('#postAuthor').value.trim(),
           category: $('#postCategory').value,
           date: new Date().toISOString().slice(0, 10),
           image: 'assets/warehouse-forklift.jpg',
-          tags: ['Demo', 'SmartLog'],
+          tags: ['Comunidade', 'SmartLog'],
           summary: $('#postSummary').value.trim(),
           body: sanitizeLines($('#postBody').value)
         };
@@ -1572,7 +1563,7 @@
         saveState(state);
         event.target.reset();
         renderArticles();
-        showToast('Artigo demo adicionado neste dispositivo.');
+        showToast('Artigo publicado.');
         location.hash = '#conteudo';
       });
 
@@ -1589,48 +1580,15 @@
         saveState(state);
         event.target.reset();
         renderForum();
-        showToast('Mensagem demo adicionada.');
+        showToast('Mensagem enviada.');
       });
 
-      $('#resetDemoBtn').addEventListener('click', () => {
+      $('#resetCommunityBtn').addEventListener('click', () => {
         saveState(defaultState());
         renderArticles();
         renderForum();
-        showToast('Demonstração local limpa.');
+        showToast('Mural limpo.');
       });
-    }
-
-    function exportData() {
-      const payload = JSON.stringify(loadState(), null, 2);
-      const blob = new Blob([payload], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'smartlog-demo.json';
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-      showToast('Arquivo JSON da demo exportado.');
-    }
-
-    function importData(file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const data = JSON.parse(reader.result);
-          const nextState = defaultState();
-          nextState.posts = Array.isArray(data.posts) ? data.posts.filter(item => item && item.title && item.summary).slice(0, 12) : [];
-          nextState.forum = Array.isArray(data.forum) && data.forum.length ? data.forum.filter(item => item && item.name && item.message).slice(0, 10) : nextState.forum;
-          saveState(nextState);
-          renderArticles();
-          renderForum();
-          showToast('Dados importados para esta demo.');
-        } catch {
-          showToast('Arquivo JSON inválido.');
-        }
-      };
-      reader.readAsText(file);
     }
 
     async function copyCurrentLink() {
@@ -1646,7 +1604,7 @@
     async function shareSite() {
       const shareData = {
         title: 'SmartLog',
-        text: 'Portal técnico de logística.',
+        text: 'Portal de logística.',
         url: location.href.split('#')[0]
       };
       if (navigator.share) {
@@ -1658,7 +1616,7 @@
     }
 
     function updateNetworkStatus() {
-      $('#networkBadge').textContent = navigator.onLine ? 'Online agora' : 'Offline com cache';
+      $('#networkBadge').textContent = navigator.onLine ? 'Conteúdo disponível' : 'Conexão instável';
     }
 
     function setupNav() {
@@ -1678,16 +1636,6 @@
       if (localStorage.getItem(THEME_KEY) === 'light') document.body.classList.add('light');
       $('#shareBtn').addEventListener('click', shareSite);
       $('#copyLinkBtn').addEventListener('click', copyCurrentLink);
-    }
-
-    function setupDataTools() {
-      $('#exportBtn').addEventListener('click', exportData);
-      $('#importBtn').addEventListener('click', () => $('#importFile').click());
-      $('#importFile').addEventListener('change', event => {
-        const [file] = event.target.files;
-        if (file) importData(file);
-        event.target.value = '';
-      });
     }
 
     function setupPwa() {
@@ -1711,11 +1659,11 @@
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js').catch(() => {
-            $('#pwaBadge').textContent = 'Cache indisponível';
+            $('#pwaBadge').textContent = 'disponível';
           });
         });
       } else {
-        $('#pwaBadge').textContent = 'Sem service worker';
+        $('#pwaBadge').textContent = 'disponível';
       }
     }
 
@@ -1743,7 +1691,6 @@
       renderTeam();
       setupForms();
       setupNav();
-      setupDataTools();
       setupPwa();
       updateNetworkStatus();
 
