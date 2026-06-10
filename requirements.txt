@@ -1,1 +1,0 @@
-# SmartLog usa apenas a biblioteca padrao do Python.
